@@ -1,0 +1,18 @@
+---
+title: "Exploración rápida de datos"
+author: "Gabriel Massaine Moulatlet"
+format: revealjs
+editor: visual
+---
+
+## Exploración de datos
+
+Vamos a utilizar los seguientes paquetes en R
+
+-   skimR
+-   janitor
+-   easystats
+
+![](images/figlogos.png)
+
+## 
