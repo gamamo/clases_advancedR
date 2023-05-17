@@ -385,6 +385,7 @@
 <section id="title-slide" class="center">
   <h1 class="title">Exploración rápida de datos</h1>
   <p class="author">Gabriel Massaine Moulatlet</p>
+  <p class="institute">Instituto de Ecología, A.C.</p>
 </section>
 
 <section>
@@ -409,9 +410,13 @@
 </blockquote>
 
 <img data-src="C:/Users/gabri/Dropbox/postdocINECOL/Curso%20Analisis%20avanzados%20en%20R/images/meme_data.jpg" class="r-stretch quarto-figure-center"></section>
+<section id="janitor" class="slide level2">
+<h2>Janitor</h2>
+
+<img data-src="C:/Users/gabri/Dropbox/postdocINECOL/Curso%20Analisis%20avanzados%20en%20R/images/janitor.png" style="width:1mm" class="r-stretch quarto-figure-right"></section>
 <section id="uso-de-la-función-table-del-r-base" class="slide level2">
 <h2>Uso de la función <em>table()</em> del R base</h2>
-<p>Esta función sirve para generar tablas de contingencia, o sea, con frecuencias o proporciones entre los objetos</p>
+<p>Esta función sirve para generar tablas de contingencia, o sea, con frecuencias, proporciones o conteos entre los objetos</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># vamos crear un data.frame</span></span>
 <span id="cb1-2"><a href="#cb1-2"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">nacionalidad =</span> <span class="fu">c</span>(<span class="st">"ARG"</span>,<span class="st">"NOR"</span>,<span class="st">"FRA"</span>,<span class="st">"ARG"</span>,<span class="st">"ARG"</span>,<span class="st">"ARG"</span>,<span class="st">"ARG"</span>),</span>
@@ -516,12 +521,9 @@
 <section id="tablas-con-na" class="slide level2">
 <h2>Tablas con NA</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">library</span>(janitor)</span>
-<span id="cb13-2"><a href="#cb13-2"></a></span>
-<span id="cb13-3"><a href="#cb13-3"></a><span class="co"># Tablas con NA</span></span>
-<span id="cb13-4"><a href="#cb13-4"></a>df <span class="sc">%&gt;%</span></span>
-<span id="cb13-5"><a href="#cb13-5"></a>  <span class="fu">filter</span>(nacionalidad <span class="sc">==</span> <span class="st">"ARG"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb13-6"><a href="#cb13-6"></a>  <span class="fu">tabyl</span>(goles)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>  <span class="fu">filter</span>(nacionalidad <span class="sc">==</span> <span class="st">"ARG"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3"></a>  <span class="fu">tabyl</span>(goles)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> goles n percent valid_percent
     12 3     0.6          0.75
@@ -529,10 +531,124 @@
     NA 1     0.2            NA</code></pre>
 </div>
 </div>
+</section>
+<section id="uso-de-la-función-adorn_" class="slide level2">
+<h2>Uso de la función <code>adorn_()</code></h2>
+<p>Algunas funciones derivadas útiles</p>
+<ul>
+<li><code>adorn_totals()</code></li>
+<li><code>adorn_percentages()</code></li>
+<li><code>adorn_rounding(digits=1)</code></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>  <span class="fu">filter</span>(nacionalidad <span class="sc">==</span> <span class="st">"ARG"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a>  <span class="fu">tabyl</span>(goles) <span class="sc">%&gt;%</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a>  <span class="fu">adorn_totals</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> goles n percent valid_percent
+    12 3     0.6          0.75
+    30 1     0.2          0.25
+  &lt;NA&gt; 1     0.2            NA
+ Total 5     1.0          1.00</code></pre>
+</div>
+</div>
+</section>
+<section id="tablas-con-dos-variables" class="slide level2">
+<h2>Tablas con dos variables</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a>  <span class="fu">filter</span>(nacionalidad <span class="sc">==</span> <span class="st">"ARG"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a>  <span class="fu">tabyl</span>(goles,partidos) <span class="sc">%&gt;%</span></span>
+<span id="cb17-4"><a href="#cb17-4"></a>  <span class="fu">adorn_percentages</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> goles        15        18        20 NA_
+    12 0.3333333 0.3333333 0.3333333   0
+    30 0.0000000 0.0000000 1.0000000   0
+    NA 0.0000000 0.0000000 0.0000000   1</code></pre>
+</div>
+</div>
+<blockquote>
+<p>QUIZ: Al usar la función <code>adorn_percentages()</code>, qué porcentajes se están calculando? Hay un argumento llamado <em>denominator = c(“all”, “row”, “col”)</em> en la función <code>adorn_percentages()</code>. Cuál es la diferencia en usar cada una de las opciones?</p>
+</blockquote>
+</section>
+<section id="section" class="slide level2">
+<h2></h2>
+<p>No confundir:</p>
+<ul>
+<li><code>adorn_percentages()</code> - calcular porcentajes</li>
+<li><code>adorn_pct_formatting()</code> - formatar los valores calculados</li>
+<li>ambas funciones pueden ser usadas una trás otra</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a>  <span class="fu">filter</span>(nacionalidad <span class="sc">==</span> <span class="st">"ARG"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb19-3"><a href="#cb19-3"></a>  <span class="fu">tabyl</span>(goles,partidos) <span class="sc">%&gt;%</span></span>
+<span id="cb19-4"><a href="#cb19-4"></a>  <span class="fu">adorn_percentages</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb19-5"><a href="#cb19-5"></a>  <span class="fu">adorn_pct_formatting</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> goles    15    18     20    NA_
+    12 33.3% 33.3%  33.3%   0.0%
+    30  0.0%  0.0% 100.0%   0.0%
+    NA  0.0%  0.0%   0.0% 100.0%</code></pre>
+</div>
+</div>
+</section>
+<section id="función-adicional---adorn_ns" class="slide level2">
+<h2>Función adicional: - <code>adorn_ns()</code></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a>  <span class="fu">filter</span>(nacionalidad <span class="sc">==</span> <span class="st">"ARG"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb21-3"><a href="#cb21-3"></a>  <span class="fu">tabyl</span>(goles,partidos) <span class="sc">%&gt;%</span></span>
+<span id="cb21-4"><a href="#cb21-4"></a>  <span class="fu">adorn_percentages</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb21-5"><a href="#cb21-5"></a>  <span class="fu">adorn_pct_formatting</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb21-6"><a href="#cb21-6"></a>  <span class="fu">adorn_ns</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> goles        15        18         20        NA_
+    12 33.3% (1) 33.3% (1)  33.3% (1)   0.0% (0)
+    30  0.0% (0)  0.0% (0) 100.0% (1)   0.0% (0)
+    NA  0.0% (0)  0.0% (0)   0.0% (0) 100.0% (1)</code></pre>
+</div>
+</div>
+</section>
+<section id="función-bonus-top_levels" class="slide level2">
+<h2>función bonus <code>top_levels()</code></h2>
+<ul>
+<li>sirve para obtener la tabla de frecuencias de un vector de factores</li>
+<li>separa los factores en 3 grupos <em>bajo</em>, <em>medio</em>, <em>alto</em></li>
+<li>la función <code>top_levels()</code> te devuelve un data.frame</li>
+</ul>
+</section>
+<section id="section-1" class="slide level2">
+<h2></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>fac <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="st">"muy fuerte"</span>,<span class="st">"muy fuerte"</span>,<span class="st">"muy fuerte"</span>,<span class="st">"fuerte"</span>,<span class="st">"débil"</span>,<span class="st">"débil"</span>,<span class="st">"muy débil"</span>,<span class="st">"muy débil"</span>))</span>
+<span id="cb23-2"><a href="#cb23-2"></a></span>
+<span id="cb23-3"><a href="#cb23-3"></a><span class="fu">top_levels</span>(fac)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   fac n percent
+         débil, fuerte 3   0.375
+ muy débil, muy fuerte 5   0.625</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">top_levels</span>(fac,<span class="at">n=</span><span class="dv">1</span>) <span class="co"># n es el numero de níveles en las categorias *bajo* y *alto*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>               fac n percent
+             débil 2   0.250
+ fuerte, muy débil 3   0.375
+        muy fuerte 3   0.375</code></pre>
+</div>
+</div>
+</section>
+<section id="section-2" class="slide level2">
+<h2></h2>
+
+<img data-src="C:/Users/gabri/Dropbox/postdocINECOL/Curso%20Analisis%20avanzados%20en%20R/images/bernie.jpg" class="r-stretch"></section></section>
+<section id="skimr" class="title-slide slide level1 center">
+<h1>skimR</h1>
 <div class="footer footer-default">
 
 </div>
-</section></section>
+</section>
     </div>
   </div>
 

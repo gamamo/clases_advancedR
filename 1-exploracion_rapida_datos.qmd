@@ -1,8 +1,10 @@
 ---
 title: "Exploración rápida de datos"
 author: "Gabriel Massaine Moulatlet"
+institute: Instituto de Ecología, A.C.
 format: revealjs
 editor: visual
+highlight-style: arrow-light
 ---
 
 # Exploración de datos
@@ -23,9 +25,13 @@ Vamos a utilizar los seguientes paquetes en R
 
 ![](C:/Users/gabri/Dropbox/postdocINECOL/Curso%20Analisis%20avanzados%20en%20R/images/meme_data.jpg){fig-align="center"}
 
+## Janitor
+
+![](C:/Users/gabri/Dropbox/postdocINECOL/Curso%20Analisis%20avanzados%20en%20R/images/janitor.png){width="1mm" fig-align="right"}
+
 ## Uso de la función *table()* del R base
 
-Esta función sirve para generar tablas de contingencia, o sea, con frecuencias o proporciones entre los objetos
+Esta función sirve para generar tablas de contingencia, o sea, con frecuencias, proporciones o conteos entre los objetos
 
 ```{r}
 #| eval: true
@@ -101,3 +107,95 @@ df %>%
   filter(nacionalidad == "ARG") %>%
   tabyl(goles)
 ```
+
+## Uso de la función `adorn_()`
+
+Algunas funciones derivadas útiles
+
+-   `adorn_totals()`
+-   `adorn_percentages()`
+-   `adorn_rounding(digits=1)`
+
+```{r}
+#| eval: true
+#| echo: true
+
+df %>%
+  filter(nacionalidad == "ARG") %>%
+  tabyl(goles) %>%
+  adorn_totals()
+
+```
+
+## Tablas con dos variables
+
+```{r}
+#| eval: true
+#| echo: true
+
+df %>%
+  filter(nacionalidad == "ARG") %>%
+  tabyl(goles,partidos) %>%
+  adorn_percentages()
+```
+
+> QUIZ: Al usar la función `adorn_percentages()`, qué porcentajes se están calculando? Hay un argumento llamado *denominator = c("all", "row", "col")* en la función `adorn_percentages()`. Cuál es la diferencia en usar cada una de las opciones?
+
+## 
+
+No confundir:
+
+-   `adorn_percentages()` - calcular porcentajes
+-   `adorn_pct_formatting()` - formatar los valores calculados
+-   ambas funciones pueden ser usadas una trás otra
+
+```{r}
+#| eval: true
+#| echo: true
+
+df %>%
+  filter(nacionalidad == "ARG") %>%
+  tabyl(goles,partidos) %>%
+  adorn_percentages() %>%
+  adorn_pct_formatting()
+
+```
+
+## Función adicional: - `adorn_ns()`
+
+```{r}
+#| eval: true
+#| echo: true
+
+df %>%
+  filter(nacionalidad == "ARG") %>%
+  tabyl(goles,partidos) %>%
+  adorn_percentages() %>%
+  adorn_pct_formatting() %>%
+  adorn_ns()
+
+```
+
+## función bonus `top_levels()`
+
+-   sirve para obtener la tabla de frecuencias de un vector de factores
+-   separa los factores en 3 grupos *bajo*, *medio*, *alto*
+-   la función `top_levels()` te devuelve un data.frame
+
+## 
+
+```{r}
+#| eval: true
+#| echo: true
+
+fac <- as.factor(c("muy fuerte","muy fuerte","muy fuerte","fuerte","débil","débil","muy débil","muy débil"))
+
+top_levels(fac)
+top_levels(fac,n=1) # n es el numero de níveles en las categorias *bajo* y *alto*
+```
+
+## 
+
+![](C:/Users/gabri/Dropbox/postdocINECOL/Curso%20Analisis%20avanzados%20en%20R/images/bernie.jpg)
+
+# skimR
