@@ -13,4 +13,8 @@ Vamos a utilizar los seguientes paquetes en R
 -   janitor
 -   easystats
 
-## 
+![](C:/Users/gabri/Dropbox/postdocINECOL/Curso Analisis avanzados en R/images/figlogos.png)
+
+## SLIDE
+
+EU QUE EU QUERO
