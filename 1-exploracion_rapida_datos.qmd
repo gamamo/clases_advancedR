@@ -5,7 +5,9 @@ format: revealjs
 editor: visual
 ---
 
-## Exploración de datos
+# Exploración de datos
+
+## Paquetes
 
 Vamos a utilizar los seguientes paquetes en R
 
@@ -13,8 +15,89 @@ Vamos a utilizar los seguientes paquetes en R
 -   janitor
 -   easystats
 
-![](C:/Users/gabri/Dropbox/postdocINECOL/Curso Analisis avanzados en R/images/figlogos.png)
+![](C:/Users/gabri/Dropbox/postdocINECOL/Curso%20Analisis%20avanzados%20en%20R/images/figlogos.png)
 
-## SLIDE
+------------------------------------------------------------------------
 
-EU QUE EU QUERO
+> "Los científicos de datos, según entrevistas y estimaciones de expertos, dedican entre el 50 % y el 80 % de su tiempo a este labor más mundano de recopilar y preparar datos digitales rebeldes, antes de que puedan explorarse en busca de pepitas útiles."
+
+![](C:/Users/gabri/Dropbox/postdocINECOL/Curso%20Analisis%20avanzados%20en%20R/images/meme_data.jpg){fig-align="center"}
+
+## Uso de la función *table()* del R base
+
+Esta función sirve para generar tablas de contingencia, o sea, con frecuencias o proporciones entre los objetos
+
+```{r}
+#| eval: true
+#| echo: true
+# vamos crear un data.frame
+df <- data.frame(nacionalidad = c("ARG","NOR","FRA","ARG","ARG","ARG","ARG"),
+                 jugadores = c('Messi', 'Haaland', 'Benzema', 'Alvarez', 'Lautaro',
+                               'DiMaria','Maradona'),
+                 goles = c(12, 30, 30, 12, 12,30,NA),
+                 partidos = c(15, 20, 20, 20, 18,20,NA))
+print(df)
+```
+
+------------------------------------------------------------------------
+
+```{r}
+#| eval: true
+#| echo: true
+# Cuantas "categorias" de goles hay?
+table(df$goles)
+
+# Cruzar la información "jugadores" y "goles"
+table(df$jugadores,df$goles)
+```
+
+## Podemos usar proporciones
+
+```{r}
+#| eval: true
+#| echo: true
+
+prop.table(table(df$jugadores,df$goles))
+```
+
+## Desventajas de usar la función table()
+
+-   el output no es un data.frame
+-   no funciona bien con los %\>% pipes
+-   los resultados son complicados de formatear
+
+```{r}
+#| eval: true
+#| echo: true
+
+tab <- table(df$jugadores,df$goles)
+class(tab)
+```
+
+## Uso de la función `tabyl()`
+
+-   usa la estructura tidyverse
+-   publica mas informaciones relevantes
+
+```{r}
+#| eval: true
+#| echo: true
+library(janitor)
+library(dplyr)
+
+# Tablas con una variable
+df %>%
+  filter(nacionalidad == "ARG") %>%
+  tabyl(jugadores)
+```
+
+## Tablas con NA
+
+```{r}
+#| eval: true
+#| echo: true
+
+df %>%
+  filter(nacionalidad == "ARG") %>%
+  tabyl(goles)
+```
