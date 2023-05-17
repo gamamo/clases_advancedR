@@ -13,6 +13,4 @@ Vamos a utilizar los seguientes paquetes en R
 -   janitor
 -   easystats
 
-![](images/figlogos.png)
-
 ## 
