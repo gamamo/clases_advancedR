@@ -406,14 +406,38 @@
 <section class="slide level2">
 
 <blockquote>
-<p>“Los científicos de datos, según entrevistas y estimaciones de expertos, dedican entre el 50 % y el 80 % de su tiempo a este labor más mundano de recopilar y preparar datos digitales rebeldes, antes de que puedan explorarse en busca de pepitas útiles.”</p>
+<p>“Los científicos de datos dedican entre el 50 % y el 80 % de su tiempo a este labor más mundano de recopilar y preparar datos digitales rebeldes, antes de que puedan explorarse en busca de pepitas útiles.”</p>
 </blockquote>
 
 <img data-src="C:/Users/gabri/Dropbox/postdocINECOL/Curso%20Analisis%20avanzados%20en%20R/images/meme_data.jpg" class="r-stretch quarto-figure-center"></section>
+<section id="section" class="slide level2">
+<h2></h2>
+<ul>
+<li>El primer paso es importar los datos en R.</li>
+<li>Antes de analisar los datos, hay que prepararlos y limpiarlos</li>
+<li>Luego, explorar los datos de manera rápida y eficiente para saber si:
+<ol type="1">
+<li>fueron importados correctamente</li>
+<li>Resumir características de los datos</li>
+</ol></li>
+</ul>
+</section>
 <section id="janitor" class="slide level2">
 <h2>Janitor</h2>
-
-<img data-src="C:/Users/gabri/Dropbox/postdocINECOL/Curso%20Analisis%20avanzados%20en%20R/images/janitor.png" style="width:1mm" class="r-stretch quarto-figure-right"></section>
+<div class="columns">
+<div class="column" style="width:20%;">
+<p><img data-src="C:/Users/gabri/Dropbox/postdocINECOL/Curso%20Analisis%20avanzados%20en%20R/images/janitor.png"></p>
+</div><div class="column" style="width:80%;">
+<ul>
+<li>Paquete con dos tipos de funciones
+<ul>
+<li>Limpieza de datos (vamos ver en la seguiente clase)</li>
+<li>Preparación de tablas de conteos (contingencia)</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</section>
 <section id="uso-de-la-función-table-del-r-base" class="slide level2">
 <h2>Uso de la función <em>table()</em> del R base</h2>
 <p>Esta función sirve para generar tablas de contingencia, o sea, con frecuencias, proporciones o conteos entre los objetos</p>
@@ -572,7 +596,7 @@
 <p>QUIZ: Al usar la función <code>adorn_percentages()</code>, qué porcentajes se están calculando? Hay un argumento llamado <em>denominator = c(“all”, “row”, “col”)</em> en la función <code>adorn_percentages()</code>. Cuál es la diferencia en usar cada una de las opciones?</p>
 </blockquote>
 </section>
-<section id="section" class="slide level2">
+<section id="section-1" class="slide level2">
 <h2></h2>
 <p>No confundir:</p>
 <ul>
@@ -619,7 +643,7 @@
 <li>la función <code>top_levels()</code> te devuelve un data.frame</li>
 </ul>
 </section>
-<section id="section-1" class="slide level2">
+<section id="section-2" class="slide level2">
 <h2></h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>fac <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="st">"muy fuerte"</span>,<span class="st">"muy fuerte"</span>,<span class="st">"muy fuerte"</span>,<span class="st">"fuerte"</span>,<span class="st">"débil"</span>,<span class="st">"débil"</span>,<span class="st">"muy débil"</span>,<span class="st">"muy débil"</span>))</span>
@@ -639,16 +663,186 @@
 </div>
 </div>
 </section>
-<section id="section-2" class="slide level2">
+<section id="section-3" class="slide level2">
 <h2></h2>
 
-<img data-src="C:/Users/gabri/Dropbox/postdocINECOL/Curso%20Analisis%20avanzados%20en%20R/images/bernie.jpg" class="r-stretch"></section></section>
-<section id="skimr" class="title-slide slide level1 center">
-<h1>skimR</h1>
-<div class="footer footer-default">
-
+<img data-src="C:/Users/gabri/Dropbox/postdocINECOL/Curso%20Analisis%20avanzados%20en%20R/images/bernie.jpg" class="r-stretch"></section>
+<section id="skimr" class="slide level2">
+<h2>skimR</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p><img data-src="C:/Users/gabri/Dropbox/postdocINECOL/Curso%20Analisis%20avanzados%20en%20R/images/skimr.png"></p>
+</div><div class="column" style="width:60%;">
+<ul>
+<li>Es un paquete de basicamente una única función <code>skim()</code></li>
+<li>La función <code>skim()</code> es útil para sumarizar conjuntos de datos muy grandes</li>
+<li>Es un combo de algunas funciones que de R base, como <code>str()</code>, <code>class()</code>, <code>summary()</code></li>
+</ul>
+</div>
 </div>
 </section>
+<section id="section-4" class="slide level2">
+<h2></h2>
+<p>Vamos aplicar la función <code>skim()</code> sobre nuestro conjunto de datos <em>df</em></p>
+<div class="cell">
+<div class="cell-output-display">
+<table>
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Name</td>
+<td style="text-align: left;">Piped data</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Number of rows</td>
+<td style="text-align: left;">7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Number of columns</td>
+<td style="text-align: left;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">_______________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Column type frequency:</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">________________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Group variables</td>
+<td style="text-align: left;">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table>
+<colgroup>
+<col style="width: 19%">
+<col style="width: 13%">
+<col style="width: 19%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 8%">
+<col style="width: 12%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">min</th>
+<th style="text-align: right;">max</th>
+<th style="text-align: right;">empty</th>
+<th style="text-align: right;">n_unique</th>
+<th style="text-align: right;">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">nacionalidad</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">jugadores</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 13%">
+<col style="width: 18%">
+<col style="width: 7%">
+<col style="width: 6%">
+<col style="width: 3%">
+<col style="width: 6%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 6%">
+<col style="width: 7%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">p0</th>
+<th style="text-align: right;">p25</th>
+<th style="text-align: right;">p50</th>
+<th style="text-align: right;">p75</th>
+<th style="text-align: right;">p100</th>
+<th style="text-align: left;">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">goles</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.86</td>
+<td style="text-align: right;">21.00</td>
+<td style="text-align: right;">9.86</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">12.0</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: left;">▇▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">partidos</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.86</td>
+<td style="text-align: right;">18.83</td>
+<td style="text-align: right;">2.04</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">18.5</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: left;">▂▁▂▁▇</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="section-5" class="slide level2">
+<h2></h2>
+
+<img data-src="C:/Users/gabri/Dropbox/postdocINECOL/Curso%20Analisis%20avanzados%20en%20R/images/skimout.jpg" class="r-stretch"><div class="footer footer-default">
+
+</div>
+</section></section>
     </div>
   </div>
 

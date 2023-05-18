@@ -21,13 +21,32 @@ Vamos a utilizar los seguientes paquetes en R
 
 ------------------------------------------------------------------------
 
-> "Los científicos de datos, según entrevistas y estimaciones de expertos, dedican entre el 50 % y el 80 % de su tiempo a este labor más mundano de recopilar y preparar datos digitales rebeldes, antes de que puedan explorarse en busca de pepitas útiles."
+> "Los científicos de datos dedican entre el 50 % y el 80 % de su tiempo a este labor más mundano de recopilar y preparar datos digitales rebeldes, antes de que puedan explorarse en busca de pepitas útiles."
 
 ![](C:/Users/gabri/Dropbox/postdocINECOL/Curso%20Analisis%20avanzados%20en%20R/images/meme_data.jpg){fig-align="center"}
 
+##
+- El primer paso es importar los datos en R.
+- Antes de analisar los datos, hay que prepararlos y limpiarlos
+- Luego, explorar los datos de manera rápida y eficiente para saber si:
+    1) Fueron importados correctamente
+    2) Resumir características de los datos
+
 ## Janitor
 
-![](C:/Users/gabri/Dropbox/postdocINECOL/Curso%20Analisis%20avanzados%20en%20R/images/janitor.png){width="1mm" fig-align="right"}
+:::: {.columns}
+
+::: {.column width="20%"}
+![](C:/Users/gabri/Dropbox/postdocINECOL/Curso%20Analisis%20avanzados%20en%20R/images/janitor.png)
+:::
+
+::: {.column width="80%"}
+- Paquete con dos tipos de funciones
+  - Limpieza de datos (vamos ver en la seguiente clase)
+  - Preparación de tablas de conteos (contingencia)
+:::
+
+::::
 
 ## Uso de la función *table()* del R base
 
@@ -198,4 +217,47 @@ top_levels(fac,n=1) # n es el numero de níveles en las categorias *bajo* y *alt
 
 ![](C:/Users/gabri/Dropbox/postdocINECOL/Curso%20Analisis%20avanzados%20en%20R/images/bernie.jpg)
 
-# skimR
+## skimR
+
+:::: {.columns}
+
+::: {.column width="40%"}
+![](C:/Users/gabri/Dropbox/postdocINECOL/Curso%20Analisis%20avanzados%20en%20R/images/skimr.png)
+:::
+
+::: {.column width="60%"}
+- Es un paquete de basicamente una única función `skim()`
+- La función `skim()` es útil para sumarizar conjuntos de datos muy grandes
+- Es un combo de algunas funciones que de R base, como `str()`, `class()`, `summary()`
+:::
+
+::::
+
+##
+Vamos aplicar la función `summary()` sobre nuestro conjunto de datos *df*
+
+```{r}
+#| eval: true
+#| echo: true
+
+summary(df)
+
+```
+
+
+## 
+Ahora vamos aplicar la función `skim()` sobre nuestro conjunto de datos *df*
+```{r}
+#| eval: true
+#| echo: true
+
+library(skimr)
+
+df%>%
+  skim()
+```
+
+##
+![](C:/Users/gabri/Dropbox/postdocINECOL/Curso%20Analisis%20avanzados%20en%20R/images/skimout.jpg)
+
+
