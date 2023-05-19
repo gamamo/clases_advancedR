@@ -13,25 +13,178 @@ highlight-style: arrow-light
 
 Vamos a utilizar los seguientes paquetes en R
 
-- bivariate
-- ggplot2
+-   bivariate
+-   ggplot2
 
 ## Biscale
 
-:::: {.columns}
-
+::: columns
 ::: {.column width="20%"}
-![](C:/Users/gabri/Dropbox/postdocINECOL/Curso%20Analisis%20avanzados%20en%20R/clases_advancedR/images/biscale.png)
-
+![](C:/Users%5Cgabri%5CDropbox%5CpostdocINECOL%5CCurso%20Analisis%20avanzados%20en%20R%5Cclases_advancedR%5Cimages%5Cbiscale.png)
 :::
 
 ::: {.column width="80%"}
-- Paquete para producir mapas bivariados (i.e. dos variables en el mismo layout)
-  - Sirve para producir leyendas bivariadas
-  - Herramientas para classificación de datos en categorías usando diferentes técninas
-  - Documentación [aqui](https://chris-prener.github.io/biscale/index.html)
+-   Paquete para producir mapas bivariados (i.e. dos variables en el mismo layout)
+    -   Sirve para producir leyendas bivariadas
+    -   Herramientas para classificación de datos en categorías usando diferentes técninas
+    -   Documentación [aqui](https://chris-prener.github.io/biscale/index.html)
+:::
 :::
 
-::::
+## Según la wikipedia
 
-## Como usarlo
+> mapa coropleto o mapa de coropletas, es un tipo de mapa temático en el que las áreas se sombrean de distintos colores, frecuentemente de la misma gama cromática, que representan distintos valores de una variable estadística característica.
+
+## 
+
+-   Mapas bivariados son útiles para graficar dos variables
+
+![](https://www.joshuastevens.net/images/js_finalBivariateMap.png)
+
+## 
+
+-   La idea central es buscar una manera de como combinar estas dos variables
+-   Escalas diferentes, número diferente de categorias etc...
+-   Mapas bivariados son hechos en dos pasos:
+    1.  Categorización de las variables según alguna estadística
+    2.  Preparación de una leyenda en base "paleta" de colores
+
+## Categorización de variables
+
+-   Normalizar los datos en conteos o proporciones
+-   las funciones `cut()` y `summary()` del R base pueden ser útiles
+-   vamos usar la base de datos *iris*
+
+```{r}
+#| eval: true
+#| echo: true
+
+summary(iris$Sepal.Length)
+```
+
+## 
+
+```{r}
+#| eval: true
+#| echo: true
+
+library(janitor)
+
+# Categorizar de acuerdo a los quantiles
+ci = cut(iris$Sepal.Length,breaks = c(4.3,5.1,5.8,6.4, max(iris$Sepal.Length)))
+
+# Explorar los resultados
+tabyl(ci)
+```
+
+## la función `classIntervals()`
+
+-   Te permite categorizar los datos usando varios tipos de categorización
+-   *quantile*, *jenkins*, *equal* para mencionar algunas
+-   hay que definir el numero de clases (parámetro *n*)
+
+```{r}
+#| eval: true
+#| echo: true
+
+library(classInt)
+
+classInt::classIntervals(iris$Sepal.Length,style="quantile",n=4)
+
+```
+
+## 
+
+::: columns
+::: {.column width="50%"}
+-   Luego de categorizar el vector de interés, se puede cortarlo con la función `cut()`
+-   Tambien se puede generar un vector con las categorías y juntarlo a los datos originales usando la función `findCols()`
+:::
+
+::: {.column width="50%"}
+```{r}
+#| eval: true
+#| echo: true
+
+breaks = classInt::classIntervals(iris$Sepal.Length,style="quantile",n=4)$brks
+
+cc = cut(iris$Sepal.Length, breaks = breaks)
+tabyl(cc)
+
+```
+:::
+:::
+
+## la función `findCols()`
+
+```{r}
+#| eval: true
+#| echo: true
+
+# Generar un vector que se pueda juntar a la tabla de datos originales
+
+fc = findCols(classInt::classIntervals(iris$Sepal.Length,style="quantile",n=4))
+head(fc)
+```
+
+## usando el paquete `biscale`
+
+::: columns
+::: {.column width="50%"}
+-   Se utliza la función `bi_class()` para generar las catetorias
+-   Una de las ventajas de usar la función `bi_class()` es que ella hace la categorización de las dos variables elejidas de una vez, contrário de la función `classIntervals()`
+:::
+
+::: {.column width="50%"}
+```{r}
+#| eval: true
+#| echo: true
+library(biscale)
+
+data <- bi_class(iris, x = Sepal.Length, y = Petal.Length, style = "quantile", dim = 3)
+
+head(data$bi_class)
+```
+:::
+:::
+
+## Preparación de una leyenda
+
+::: columns
+
+::: {.column width="50%"}
+![](https://www.joshuastevens.net/images/js_bivariateGrid.png){fig-align="center"} 
+![](https://www.joshuastevens.net/images/js_bivariateGrid2.png){fig-align="center"} 
+:::
+
+:::{.column width="50%"}
+![](https://www.joshuastevens.net/images/js_bivariateGrid4.png){fig-align="center"} 
+:::
+:::
+
+## 
+
+::: columns
+::: {.column width="50%"}
+![](C:/Users%5Cgabri%5CDropbox%5CpostdocINECOL%5CCurso%20Analisis%20avanzados%20en%20R%5Cclases_advancedR%5Cimages%5Cayy.png)
+:::
+
+::: {.column width="50%"}
+![](https://www.joshuastevens.net/images/js_bivariateGrid7.png){fig-align="center"}
+:::
+:::
+
+## la función `bi_legend()`
+- para ver las paletas disponibles [aqui](https://chris-prener.github.io/biscale/articles/bivariate_palettes.html)
+
+```{r}
+#| eval: true
+#| echo: true
+
+bi_legend(pal = "GrPink",
+                    dim = 3,
+                    xlab = "Sepal.Length",
+                    ylab = "Petal.Lenght",
+                    size = 12)
+```
+
