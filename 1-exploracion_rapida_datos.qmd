@@ -44,6 +44,7 @@ Vamos a utilizar los seguientes paquetes en R
 - Paquete con dos tipos de funciones
   - Limpieza de datos (vamos ver en la seguiente clase)
   - Preparación de tablas de conteos (contingencia)
+  - Documentación [aqui](https://sfirke.github.io/janitor/articles/janitor.html)
 :::
 
 ::::
@@ -180,7 +181,7 @@ df %>%
 
 ```
 
-## Función adicional: - `adorn_ns()`
+## Función adicional: `adorn_ns()`
 
 ```{r}
 #| eval: true
@@ -229,6 +230,8 @@ top_levels(fac,n=1) # n es el numero de níveles en las categorias *bajo* y *alt
 - Es un paquete de basicamente una única función `skim()`
 - La función `skim()` es útil para sumarizar conjuntos de datos muy grandes
 - Es un combo de algunas funciones que de R base, como `str()`, `class()`, `summary()`
+- Documentación [aqui](https://cran.r-project.org/web/packages/skimr/vignettes/skimr.html) y [aqui](https://docs.ropensci.org/skimr/articles/extending_skimr.html)
+
 :::
 
 ::::
@@ -243,8 +246,6 @@ Vamos aplicar la función `summary()` sobre nuestro conjunto de datos *df*
 summary(df)
 
 ```
-
-
 ## 
 Ahora vamos aplicar la función `skim()` sobre nuestro conjunto de datos *df*
 ```{r}
@@ -260,4 +261,5 @@ df%>%
 ##
 ![](C:/Users/gabri/Dropbox/postdocINECOL/Curso%20Analisis%20avanzados%20en%20R/images/skimout.jpg)
 
+##
 
