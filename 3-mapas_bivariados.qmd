@@ -1,0 +1,43 @@
+---
+<<<<<<< HEAD
+title: "Mapas bivariados"
+author: "Gabriel Massaine Moulatlet"
+institute: Instituto de Ecología, A.C.
+format: revealjs
+editor: visual
+highlight-style: arrow-light
+---
+
+# Mapas bivariados
+
+## Paquetes
+
+Vamos a utilizar los seguientes paquetes en R
+
+- bivariate
+- ggplot2
+
+## Biscale
+
+:::: {.columns}
+
+::: {.column width="20%"}
+![](C:/Users/gabri/Dropbox/postdocINECOL/Curso%20Analisis%20avanzados%20en%20R/clases_advancedR/images/biscale.png)
+
+:::
+
+::: {.column width="80%"}
+- Paquete para producir mapas bivariados (i.e. dos variables en el mismo layout)
+  - Sirve para producir leyendas bivariadas
+  - Herramientas para classificación de datos en categorías usando diferentes técninas
+  - Documentación [aqui](https://chris-prener.github.io/biscale/index.html)
+:::
+
+::::
+=======
+title: "Bivariate maps"
+author: "Gabriel Massaine Moulatlet"
+format: html
+editor: visual
+---
+>>>>>>> 7a5edeeb0bc463937832ba95cb32335c9d93bc99
