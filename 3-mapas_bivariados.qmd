@@ -1,5 +1,6 @@
 ---
 <<<<<<< HEAD
+<<<<<<< HEAD
 title: "Mapas bivariados"
 author: "Gabriel Massaine Moulatlet"
 institute: Instituto de Ecología, A.C.
@@ -35,9 +36,14 @@ Vamos a utilizar los seguientes paquetes en R
 
 ::::
 =======
+=======
+>>>>>>> 7a5edeeb0bc463937832ba95cb32335c9d93bc99
 title: "Bivariate maps"
 author: "Gabriel Massaine Moulatlet"
 format: html
 editor: visual
 ---
+<<<<<<< HEAD
+>>>>>>> 7a5edeeb0bc463937832ba95cb32335c9d93bc99
+=======
 >>>>>>> 7a5edeeb0bc463937832ba95cb32335c9d93bc99
