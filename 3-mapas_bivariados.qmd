@@ -151,14 +151,12 @@ head(data$bi_class)
 ## Preparación de una leyenda
 
 ::: columns
-
 ::: {.column width="50%"}
-![](https://www.joshuastevens.net/images/js_bivariateGrid.png){fig-align="center"} 
-![](https://www.joshuastevens.net/images/js_bivariateGrid2.png){fig-align="center"} 
+![](https://www.joshuastevens.net/images/js_bivariateGrid.png){fig-align="center"} ![](https://www.joshuastevens.net/images/js_bivariateGrid2.png){fig-align="center"}
 :::
 
-:::{.column width="50%"}
-![](https://www.joshuastevens.net/images/js_bivariateGrid4.png){fig-align="center"} 
+::: {.column width="50%"}
+![](https://www.joshuastevens.net/images/js_bivariateGrid4.png){fig-align="center"}
 :::
 :::
 
@@ -175,7 +173,8 @@ head(data$bi_class)
 :::
 
 ## la función `bi_legend()`
-- para ver las paletas disponibles [aqui](https://chris-prener.github.io/biscale/articles/bivariate_palettes.html)
+
+-   para ver las paletas disponibles [aqui](https://chris-prener.github.io/biscale/articles/bivariate_palettes.html)
 
 ```{r}
 #| eval: true
@@ -188,3 +187,56 @@ bi_legend(pal = "GrPink",
                     size = 12)
 ```
 
+## El mapa bivariado
+
+1) vamos a ver el ejemplo del vignette
+- son datos sobre el porcentaje de "brancos" y la ganancia en los EUA.
+- vamos usar las columnas `pctWhite` y `medInc` para hacer el mapa.
+- vamos usar 3 dimensiones y categorizar los datos usando `quantiles`
+-   para ver las paletas disponibles [aqui](https://chris-prener.github.io/biscale/articles/bivariate_palettes.html)
+
+## 
+![](https://chris-prener.github.io/biscale/reference/figures/biscale.002.jpeg){{fig-align="center"}
+
+## Manos a la obra!
+
+::: columns
+::: {.column width="50%"}
+- el mapa se construye usando el ggplot
+- determinamos el geom como `geom_sf`y como argumento estético `fill=bi_class`
+- el `bi_class` debe ser la categorización que hemos visto anteriormente con usando la justamente a función `bi_class()`
+- una de las capas del ggpplot debe ser `bi_scale_fill`, donde van a poner el argumento `pal` - que es la paleta de colores y `dim` - que es el numero de categorías utilizadas para categorizar los datos.
+:::
+::: {.column width="50%"}
+
+```{r}
+#| eval: false
+#| echo: true
+#| code-overflow: wrap
+
+library(ggplot2)
+library(sf)
+
+map <- ggplot() +
+  geom_sf(data = data, mapping = aes(fill = bi_class), color = "white", size = 0.1, show.legend = FALSE) +
+  bi_scale_fill(pal = "GrPink", dim = 3)
+```
+
+:::
+:::
+
+## 
+- Después de preparar el mapa, hay que prepara la leyenda
+- Por fin, ponerlos lado a lado usando el paquete `patchwork`
+```{r}
+#| eval: false
+#| echo: true
+map + legend
+```
+
+##
+Se puede jugar con el layout final usando la función `inset`
+
+p1 + inset_element(p2, 0.6, 0.6, 1, 1) # left, top, right, bottom
+
+![](https://patchwork.data-imaginist.com/reference/inset_element-1.png)
