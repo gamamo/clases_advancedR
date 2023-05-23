@@ -1,0 +1,138 @@
+---
+title: "bivariate_maps"
+author: "Gabriel Massaine Moulatlet"
+date: "2023-05-23"
+output: html_document
+---
+
+```{r eval=F}
+library(sf)
+library(ggplot2)
+library(rnaturalearth)
+library(tidyterra)
+library(classInt)
+library(biscale)
+```
+
+Cargar el mapa base
+
+```{r, eval=F}
+wrld <- ne_countries(scale = "small",returnclass = "sf")
+```
+
+Cargar los datos y ajustar el CRS
+
+```{r, eval=F}
+resu = read.csv(file="dados_bivariate_maps.csv")
+geo = st_as_sf(resu,coords = c(1,2))
+st_crs(geo)= st_crs(wrld)
+```
+
+### Preparar el mapa usando el paquete `biscale`
+
+Calcular las categorias
+```{r,eval=FALSE}
+cat <- bi_class(geo, x = TBD, y = PBD, style = "quantile", dim = 3)
+```
+
+Preparar la leyenda
+```{r,eval=FALSE}
+leg =bi_legend(pal = "DkBlue",
+          dim = 3,
+          xlab = "Taxonomic beta",
+          ylab = "Phylogenetic beta",
+          size = 12)
+```
+
+Preparar el mapa
+```{r,eval=FALSE}
+map =ggplot(data=wrld)+
+  geom_sf()+
+  geom_sf(data = cat, aes(color =  bi_class), size = 10, shape=15,show.legend = FALSE) +
+  bi_scale_color(pal = "DkBlue", dim = 3)+
+  theme_bw()+
+  theme(panel.grid.major = element_blank())+
+  coord_sf(xlim = c(-95, -86), ylim = c(16, 25), expand = FALSE)
+map
+
+```
+
+### Preparar el mapa manualmente
+
+Crear un *grid*
+```{r,eval=FALSE}
+d<-expand.grid(x=1:3,y=1:3)
+d
+```
+
+Hacer la leyenda
+```{r,eval=FALSE}
+leg2 =ggplot(d,aes(x,y))+
+  
+  #crear el *tile* jugando con los parámetros de colores *fill* y *alpha*
+  geom_tile( aes(fill=atan(y/x),alpha=x+y))+
+  scale_fill_viridis_c()+
+  
+  #Definir los temas
+  theme(legend.position="none",
+        panel.background=element_blank(),
+        axis.text.y = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks = element_blank(),
+        axis.title.x = element_text(size=15,hjust=0.6),
+        axis.title.y = element_text(size=15),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_blank(),
+        plot.background = element_rect(fill = "white",color="white"))+
+ 
+  # Definir los titulos de los ejes
+  labs(x="PBD",
+       y="TBD")+
+  
+  # Decir que los tiles deben se cuadrados
+  coord_equal()+
+  
+  # Poner flechitas
+  geom_segment(aes(x=1, xend = 3 , y=0, yend = 0), size=1.5,
+               arrow = arrow(length = unit(0.6,"cm"))) +
+  geom_segment(aes(x=0, xend = 0 , y=1, yend = 3), size=1.5,
+               arrow = arrow(length = unit(0.6,"cm"))) 
+leg2
+```
+
+Categorizar los datos
+```{r,eval=FALSE}
+catTBD = classInt::classIntervals(geo$TBD,3,style = "quantile")
+catPBD = classInt::classIntervals(geo$PBD,3,style = "quantile")
+```
+
+Juntar las columnas
+```{r,eval=FALSE}
+geo$catTBD = classInt::findCols(catTBD)
+geo$catPBD= classInt::findCols(catPBD)
+```
+
+Hacer columnas para el *alpha* y *color*
+```{r,eval=FALSE}
+geo$alpha = as.character(geo$catTBD + geo$catPBD)
+geo$color  = as.character(atan(geo$catTBD/geo$catPBD))
+```
+
+Hacer el mapa
+```{r,eval=FALSE}
+map2 = ggplot()+
+  geom_sf(data=wrld)+
+  geom_sf(data = geo,aes(color=color,alpha=alpha),shape=15, size=10,show.legend = FALSE)+
+  scale_color_viridis_d()+
+  theme_bw()+
+  theme(panel.grid.major = element_blank())+
+  coord_sf(xlim = c(-95, -86), ylim = c(16, 25), expand = FALSE)
+map2
+```
+Agregar la leyenda
+
+```{r,eval=FALSE}
+map + leg
+map2 + leg2
+```
+

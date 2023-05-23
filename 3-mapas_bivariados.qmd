@@ -189,26 +189,28 @@ bi_legend(pal = "GrPink",
 
 ## El mapa bivariado
 
-1) vamos a ver el ejemplo del vignette
-- son datos sobre el porcentaje de "brancos" y la ganancia en los EUA.
-- vamos usar las columnas `pctWhite` y `medInc` para hacer el mapa.
-- vamos usar 3 dimensiones y categorizar los datos usando `quantiles`
+1)  vamos a ver el ejemplo del vignette
+
+-   son datos sobre el porcentaje de "brancos" y la ganancia en los EUA.
+-   vamos usar las columnas `pctWhite` y `medInc` para hacer el mapa.
+-   vamos usar 3 dimensiones y categorizar los datos usando `quantiles`
 -   para ver las paletas disponibles [aqui](https://chris-prener.github.io/biscale/articles/bivariate_palettes.html)
 
 ## 
+
 ![](https://chris-prener.github.io/biscale/reference/figures/biscale.002.jpeg){{fig-align="center"}
 
 ## Manos a la obra!
 
 ::: columns
 ::: {.column width="50%"}
-- el mapa se construye usando el ggplot
-- determinamos el geom como `geom_sf`y como argumento estético `fill=bi_class`
-- el `bi_class` debe ser la categorización que hemos visto anteriormente con usando la justamente a función `bi_class()`
-- una de las capas del ggpplot debe ser `bi_scale_fill`, donde van a poner el argumento `pal` - que es la paleta de colores y `dim` - que es el numero de categorías utilizadas para categorizar los datos.
+-   el mapa se construye usando el ggplot
+-   determinamos el geom como `geom_sf`y como argumento estético `fill=bi_class`
+-   el `bi_class` debe ser la categorización que hemos visto anteriormente con usando la justamente a función `bi_class()`
+-   una de las capas del ggpplot debe ser `bi_scale_fill`, donde van a poner el argumento `pal` - que es la paleta de colores y `dim` - que es el numero de categorías utilizadas para categorizar los datos.
 :::
-::: {.column width="50%"}
 
+::: {.column width="50%"}
 ```{r}
 #| eval: false
 #| echo: true
@@ -217,26 +219,208 @@ bi_legend(pal = "GrPink",
 library(ggplot2)
 library(sf)
 
+data <- bi_class(stl_race_income, x = pctWhite, y = medInc, style = "quantile", dim = 3)
+
 map <- ggplot() +
   geom_sf(data = data, mapping = aes(fill = bi_class), color = "white", size = 0.1, show.legend = FALSE) +
   bi_scale_fill(pal = "GrPink", dim = 3)
 ```
-
 :::
 :::
 
 ## 
-- Después de preparar el mapa, hay que prepara la leyenda
-- Por fin, ponerlos lado a lado usando el paquete `patchwork`
+
+-   Después de preparar el mapa, hay que prepara la leyenda
+-   Por fin, ponerlos lado a lado usando el paquete `patchwork`
+
 ```{r}
 #| eval: false
 #| echo: true
 map + legend
 ```
 
-##
+## 
+
 Se puede jugar con el layout final usando la función `inset`
 
-p1 + inset_element(p2, 0.6, 0.6, 1, 1) # left, top, right, bottom
+p1 + inset_element(p2, 0.6, 0.6, 1, 1) \# left, top, right, bottom
 
 ![](https://patchwork.data-imaginist.com/reference/inset_element-1.png)
+
+## Como hacer mapas bivariados sin usar el paquete `biscale`
+
+-   el tutorial de \[Len Kiefer\] (http://lenkiefer.com/2017/04/24/bivariate-map/)
+-   usar el paquete `classInt` para categorizar los datos
+-   usar el esquema de colores de la leyenda para preparar el mapa
+
+![](http://lenkiefer.com/post/2017-04-24-bivariate-map_files/figure-html/04-24-2017-setup-2-1.png)
+
+## 
+
+-   la leyenda se hace con la función `expand_grid()` del paquete `tidyr`
+
+```{r}
+#| eval: true
+#| echo: true
+library(tidyr)
+
+expand.grid(x=1:3,y=1:3)
+
+```
+
+## 
+
+```{r}
+#| eval: true
+#| echo: true
+
+ggplot(d, aes(x,y))+
+  geom_tile(aes(alpha=x+y,fill=atan(y/x)))+
+  scale_fill_viridis_c()+
+  theme(legend.position="none",
+        axis.text.y = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_blank())+
+  coord_equal()
+```
+
+## 
+
+-   Lo importante aqui es usar el geom `geom_tile`
+-   Permite usar varios [colores](https://ggplot2.tidyverse.org/reference/geom_tile.html)
+-   vamos jugar con los valores de `alpha` (transparencia) y `fill`
+
+## 
+
+::: columns
+::: {.column width="50%"}
+```{r}
+#| eval: true
+#| echo: false
+ggplot(d, aes(x,y))+
+  geom_tile(aes(fill=atan(y/x)))+
+  scale_fill_viridis_c()+
+  theme(legend.position="none",
+        axis.text.y = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_blank())+
+  coord_equal()
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+#| eval: true
+#| echo: false
+ggplot(d, aes(x,y))+
+  geom_tile(aes(fill=atan(y/x),alpha=x+y))+
+  scale_fill_viridis_c()+
+  theme(legend.position="none",
+        axis.text.y = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_blank())+
+  coord_equal()
+```
+:::
+:::
+
+## Categoizar los datos
+
+-   vamos usar las funciones `classInt()` y `findCols()`
+
+```{r}
+#| eval: true
+#| echo: true
+ x=classInt::classIntervals(stl_race_income$pctWhite,4,style = "quantile")
+ y=classInt::classIntervals(stl_race_income$medInc,4,style = "quantile")
+```
+
+## 
+
+```{r}
+#| eval: true
+#| echo: true
+
+stl_race_income$x = classInt::findCols(x)
+stl_race_income$y = classInt::findCols(y)
+head(stl_race_income)
+```
+
+## Crar un objeto para el `alpha` y otro para el `fill`
+
+```{r}
+#| eval: true
+#| echo: true
+#| 
+stl_race_income$alpha = as.character(stl_race_income$x + stl_race_income$y)
+stl_race_income$color = as.character(atan(stl_race_income$y/stl_race_income$x))
+
+```
+
+## Graficar el mapa
+
+```{r}
+#| eval: true
+#| echo: true
+
+map = ggplot()+
+  #geom_sf(data=wrld)+
+  geom_sf(data = stl_race_income,aes(fill=color,alpha=alpha),shape=15, size=11,show.legend = FALSE)+
+  scale_fill_viridis_d()+
+  theme_bw()
+map
+
+```
+
+## Graficar la leyenda
+
+```{r}
+#| eval: true
+#| echo: true
+leg = ggplot(d, aes(x,y))+
+  geom_tile(aes(fill=atan(y/x),alpha=x+y))+
+  scale_fill_viridis_c()+
+  theme(legend.position="none",
+        axis.text.y = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_blank())+
+  coord_equal()
+leg
+```
+
+## Juntar los dos
+
+```{r}
+#| eval: true
+#| echo: false
+library(patchwork)
+
+map + leg
+
+
+```
+
+## Se parecen?
+
+::: column
+::: {.column width="50%"}
+```{r}
+#| eval: true
+#| echo: false
+library(patchwork)
+map + leg
+```
+:::
+
+::: {.column width="50%"}
+![](https://chris-prener.github.io/biscale/reference/figures/biscale.002.jpeg)
+:::
+:::
