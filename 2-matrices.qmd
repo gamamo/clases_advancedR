@@ -32,13 +32,13 @@ highlight-style: arrow-light
 - *scaling* que usamos en las PCAs
 - Para comparar diferentes vectores
 
-#![](C:/Users%5Cgabri%5CDropbox%5CpostdocINECOL%5CCurso%20Analisis%20avanzados%20en%20R%5Cclases_advancedR%5Cimages%5vector.jpg)
+##
+![](C:/Users%5Cgabri%5CDropbox%5CpostdocINECOL%5CCurso%20Analisis%20avanzados%20en%20R%5Cclases_advancedR%5Cimages%5vector.jpg)
 
 ## Son muy usadas en los analisis de ecologia
 - Analisis multivariadas en ecologia de comunidades
 - Para sumarizar grandes conjuntos de datos
 - En las estadísticas empleadas (lm, pglm, glm etc)
-
 
 ## Matrices en R
 
@@ -47,7 +47,6 @@ highlight-style: arrow-light
 -   `data.frame()`: mix de tipos numeros y caracteres
 
 ## Estructura
-
 -   una matriz tiene 2 dimensiones, formadas por filas y columnas
 
 ```{r}
@@ -59,7 +58,6 @@ matrix(data=NA, nrow = 2, ncol=2)
 ```
 
 ## los argumentos
-
 -   *dimnames*
 -   una lista con los nombres de las filas y de las columnas, respectivamente
 
@@ -80,7 +78,6 @@ matrix(vec, nrow = 3, byrow = T )
 ```
 
 ## 
-
 -   si `byrow=F`, el llenado se da por columnas
 
 ```{r}
@@ -107,5 +104,6 @@ matrix(vec, nrow = 3, byrow = F )
 ## Funciones útiles en el paquete `phyloregion`
 - Para datos de comunidades (sitios x species)
 ![](https://besjournals.onlinelibrary.wiley.com/cms/asset/9d1bd0e9-bf6b-4c35-ba9d-6cbf31a48d2e/mee313478-fig-0002-m.jpg)
+
 ##
 -   Pueden ser transformadas en objetos de distancias (`dist()`)
