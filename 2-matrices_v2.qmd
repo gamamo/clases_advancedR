@@ -19,13 +19,13 @@ highlight-style: arrow-light
 -   Gran parte del lenguaje de los softwares está basada en notaciones de matrices 
 
 ## La matrix
-![](C:/Users%5Cgabri%5CDropbox%5CpostdocINECOL%5CCurso%20Analisis%20avanzados%20en%20R%5Cclases_advancedR%5Cimages%5Cmatrix.jpg)
+![](imgs/matrix.jpg)
 
 ## La matrix de asociación
 - Similitud o Distancias
 - numero de filas tiene que ser igual al numero de columnas
 
-![](C:/Users%5Cgabri%5CDropbox%5CpostdocINECOL%5CCurso%20Analisis%20avanzados%20en%20R%5Cclases_advancedR%5Cimages%5Camatrix.jpg)
+![](imgs/amatrix.jpg)
 
 
 ## Matrices de una columna (o *vectores*)
@@ -33,7 +33,7 @@ highlight-style: arrow-light
 - Para comparar diferentes vectores
 
 ##
-![](C:/Users%5Cgabri%5CDropbox%5CpostdocINECOL%5CCurso%20Analisis%20avanzados%20en%20R%5Cclases_advancedR%5Cimages%5vector.jpg)
+![](imgs/vector.jpg)
 
 ## Son muy usadas en los analisis de ecologia
 - Analisis multivariadas en ecologia de comunidades
@@ -92,7 +92,7 @@ matrix(vec, nrow = 3, byrow = F )
 ## *Sparse* vs. *Dense* matrices
 - paquete `Matrix`
 
-![](C:/Users%5Cgabri%5CDropbox%5CpostdocINECOL%5CCurso%20Analisis%20avanzados%20en%20R%5Cclases_advancedR%5Cimages%5sparse.jpg)
+![](imgs/sparse.png)
 
 [Fuente](https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/bcd746dca8cbf0d5a890f01a72d8ef64_MIT18_335JS19_lec24.pdf)
 

@@ -16,38 +16,38 @@ Vamos a utilizar los seguientes paquetes en R
 -   skimR
 -   janitor
 -   easystats
+-   report
 
-![](C:/Users/gabri/Dropbox/postdocINECOL/Curso%20Analisis%20avanzados%20en%20R/images/figlogos.png)
+![](imgs/figlogos.png)
 
 ------------------------------------------------------------------------
 
-> "Los científicos de datos dedican entre el 50 % y el 80 % de su tiempo a este labor más mundano de recopilar y preparar datos digitales rebeldes, antes de que puedan explorarse en busca de pepitas útiles."
+> "Los científicos de datos dedican entre el 50 % y el 80 % de su tiempo a este labor más mundano de recopilar y preparar datos digitales rebeldes, antes de que puedan explorarse en busca de pepitas útiles." - Anonymous (2023)
 
-![](C:/Users/gabri/Dropbox/postdocINECOL/Curso%20Analisis%20avanzados%20en%20R/images/meme_data.jpg){fig-align="center"}
+![](imgs//meme_data.jpg){fig-align="center"}
 
-##
-- El primer paso es importar los datos en R.
-- Antes de analisar los datos, hay que prepararlos y limpiarlos
-- Luego, explorar los datos de manera rápida y eficiente para saber si:
-    1) Fueron importados correctamente
-    2) Resumir características de los datos
+## Pasos para la exploración de datos
+
+-   El primer paso es importar los datos en R.
+-   Antes de analisar los datos, hay que prepararlos y limpiarlos
+-   Luego, explorar los datos de manera rápida y eficiente para saber si:
+    1)  Fueron importados correctamente
+    2)  Resumir características de los datos
 
 ## Janitor
 
-:::: {.columns}
-
+::: columns
 ::: {.column width="20%"}
-![](C:/Users/gabri/Dropbox/postdocINECOL/Curso%20Analisis%20avanzados%20en%20R/images/janitor.png)
+![](imgs//janitor.png)
 :::
 
 ::: {.column width="80%"}
-- Paquete con dos tipos de funciones
-  - Limpieza de datos (vamos ver en la seguiente clase)
-  - Preparación de tablas de conteos (contingencia)
-  - Documentación [aqui](https://sfirke.github.io/janitor/articles/janitor.html)
+-   Paquete con dos tipos de funciones
+    -   Limpieza de datos (vamos ver en la seguiente clase)
+    -   Preparación de tablas de conteos (contingencia) 
+    -   Documentación [aqui](https://sfirke.github.io/janitor/articles/janitor.html)
 :::
-
-::::
+:::
 
 ## Uso de la función *table()* del R base
 
@@ -60,16 +60,23 @@ Esta función sirve para generar tablas de contingencia, o sea, con frecuencias,
 df <- data.frame(nacionalidad = c("ARG","NOR","FRA","ARG","ARG","ARG","ARG"),
                  jugadores = c('Messi', 'Haaland', 'Benzema', 'Alvarez', 'Lautaro',
                                'DiMaria','Maradona'),
-                 goles = c(12, 30, 30, 12, 12,30,NA),
-                 partidos = c(15, 20, 20, 20, 18,20,NA))
+                 goles = c(12, 30, 30, 12, 12,30, NA),
+                 partidos = c(15, 20, 20, 20, 18,20, NA))
 print(df)
 ```
 
-------------------------------------------------------------------------
+## Vamos a probar algunas de sus habilidades en R...
+
+- Usando la función `table()`:
+  - Cuantos tipos de "goles" hay?
+  - Cuantos goles cada jugador ha hecho?
+
+## Qué les salió?
 
 ```{r}
 #| eval: true
 #| echo: true
+
 # Cuantas "categorias" de goles hay?
 table(df$goles)
 
@@ -77,7 +84,7 @@ table(df$goles)
 table(df$jugadores,df$goles)
 ```
 
-## Podemos usar proporciones
+## La función `table()` permite calcular proporciones
 
 ```{r}
 #| eval: true
@@ -88,9 +95,9 @@ prop.table(table(df$jugadores,df$goles))
 
 ## Desventajas de usar la función table()
 
--   el output no es un data.frame
--   no funciona bien con los %\>% pipes
--   los resultados son complicados de formatear
+-   El output no es un data.frame
+-   No funciona bien con los pipes (%>%)
+-   Los resultados son complicados de extraer y formatear
 
 ```{r}
 #| eval: true
@@ -100,11 +107,15 @@ tab <- table(df$jugadores,df$goles)
 class(tab)
 ```
 
-## Uso de la función `tabyl()`
+## Uso de la función `janitor::tabyl()`
 
--   usa la estructura tidyverse
--   publica mas informaciones relevantes
+-   Usa la estructura tidyverse
+-   El output nos da informaciones más relevantes
 
+## La función `janitor::tabyl()`
+
+::: columns
+::: {.column width="50%"}
 ```{r}
 #| eval: true
 #| echo: true
@@ -113,24 +124,47 @@ library(dplyr)
 
 # Tablas con una variable
 df %>%
-  filter(nacionalidad == "ARG") %>%
   tabyl(jugadores)
 ```
+:::
+
+::: {.column width="50%"}
+```{r}
+#| eval: true
+#| echo: true
+library(janitor)
+library(dplyr)
+
+# Tablas con una variable - comparar con la función `table()`
+  table(df$jugadores)
+```
+:::
+:::
+
 
 ## Tablas con NA
+
+- La función `tabyl()`te indica la presencia de NAs, mientras que `table()` no lo hace por defecto
 
 ```{r}
 #| eval: true
 #| echo: true
 
 df %>%
-  filter(nacionalidad == "ARG") %>%
   tabyl(goles)
 ```
 
-## Uso de la función `adorn_()`
+## 
+```{r}
+#| eval: true
+#| echo: true
 
-Algunas funciones derivadas útiles
+table(df$goles, useNA = "always")
+```
+
+# Uso de la función `janitor::adorn_()`
+
+## Algunas funciones derivadas útiles
 
 -   `adorn_totals()`
 -   `adorn_percentages()`
@@ -159,11 +193,11 @@ df %>%
   adorn_percentages()
 ```
 
-> QUIZ: Al usar la función `adorn_percentages()`, qué porcentajes se están calculando? Hay un argumento llamado *denominator = c("all", "row", "col")* en la función `adorn_percentages()`. Cuál es la diferencia en usar cada una de las opciones?
+## QUIZ
 
-## 
+> Al usar la función `adorn_percentages()`, qué porcentajes se están calculando? Hay un argumento llamado *denominator = c("all", "row", "col")* en la función `adorn_percentages()`. Cuál es la diferencia en usar cada una de las opciones?
 
-No confundir:
+## No confundir:
 
 -   `adorn_percentages()` - calcular porcentajes
 -   `adorn_pct_formatting()` - formatar los valores calculados
@@ -214,29 +248,34 @@ top_levels(fac)
 top_levels(fac,n=1) # n es el numero de níveles en las categorias *bajo* y *alto*
 ```
 
-## 
+## Janitor Miscellaneous functions 
+- `clean_names()` para limpiar y ajustar nombres de columnas en data.frames
+- `compare_df_cols()` para comparar si columnas de dos data.frames son iguales
+- `remove_empty()` para remover celdas vacías en data.frames
+- otras funciones [aqui](https://sfirke.github.io/janitor/articles/janitor.html)
 
-![](C:/Users/gabri/Dropbox/postdocINECOL/Curso%20Analisis%20avanzados%20en%20R/images/bernie.jpg)
+##
+![](imgs/bernie.jpg)
+
+# Funciones de Visualización de datos
 
 ## skimR
 
-:::: {.columns}
-
+::: columns
 ::: {.column width="40%"}
-![](C:/Users/gabri/Dropbox/postdocINECOL/Curso%20Analisis%20avanzados%20en%20R/images/skimr.png)
+![](imgs/skimr.png)
 :::
 
 ::: {.column width="60%"}
-- Es un paquete de basicamente una única función `skim()`
-- La función `skim()` es útil para sumarizar conjuntos de datos muy grandes
-- Es un combo de algunas funciones que de R base, como `str()`, `class()`, `summary()`
-- Documentación [aqui](https://cran.r-project.org/web/packages/skimr/vignettes/skimr.html) y [aqui](https://docs.ropensci.org/skimr/articles/extending_skimr.html)
-
+-   Es un paquete de basicamente una única función `skim()`
+-   La función `skim()` es útil para sumarizar conjuntos de datos muy grandes
+-   Es un combo de algunas funciones que de R base, como `str()`, `class()`, `summary()`
+-   Documentación  [aqui](https://cran.r-project.org/web/packages/skimr/vignettes/skimr.html) y [aqui](https://docs.ropensci.org/skimr/articles/extending_skimr.html)
+:::
 :::
 
-::::
+## 
 
-##
 Vamos aplicar la función `summary()` sobre nuestro conjunto de datos *df*
 
 ```{r}
@@ -246,8 +285,11 @@ Vamos aplicar la función `summary()` sobre nuestro conjunto de datos *df*
 summary(df)
 
 ```
+
 ## 
+
 Ahora vamos aplicar la función `skim()` sobre nuestro conjunto de datos *df*
+
 ```{r}
 #| eval: true
 #| echo: true
@@ -258,8 +300,67 @@ df%>%
   skim()
 ```
 
-##
-![](C:/Users/gabri/Dropbox/postdocINECOL/Curso%20Analisis%20avanzados%20en%20R/images/skimout.jpg)
+## 
 
-##
+![](imgs/skimout.jpg)
+
+## Función adicional: `dplyr::glimpse()`
+
+```{r}
+#| eval: true
+#| echo: true
+library(dplyr)
+
+df%>%
+  glimpse()
+
+```
+# Tarea
+
+## 
+
+![](imgs/homework.jpg) {fig-align="center"}
+
+## Contexto
+
+Un colega está investigando el efecto de la construcción de una represa en el rio Madeira, Amazonía, sobre la comunidad de hormigas. Hay un efecto fuerte de cambio de la comunidad en el "antes" y "después" de la construcción (medido con el indice Bray-Curtis). Sin embargo, las variables climatológicas y edáficas no han cambiado, por lo que este colega tiene la hipótesis del cambio de nível freático.
+
+Para cada parcela se calculó 3 valores (tipo 2, 3 y 4) de un descriptor de la hidrología local llamado [HAND](https://www.sciencedirect.com/science/article/abs/pii/S003442570800120X). Los valores fueron calculados para antes y después de la inundación.
+
+## 
+
+El colega necesita saber cuál de los 3 valores podrá ser usado como variable descriptora en su estudio. En la figura abajo se ve el efecto de la inundación en el Rio Madeira sobre un modelo digital de elevación
+
+![](imgs/comp4.png) {fig-align="center"}
+
+## Instrucciones
+
+- Importar el conjunto de datos: "ej_visualizacion_datos.xlsx". Usar la función `rio::import()`
+- Es necesario estandarizar los nombres de las columnas? Caso positivo, usar la función `janitor::clean_names()`
+
+## Usando única función vista en clase, contestar a las preguntas:
+
+- Cuál de las columnas tiene mayor promedio?
+- Cuál tiene el mayor valor
+- Cuál tiene una distribución que más se acerca a una "normal"?
+- Cuántos grupos de parcelas hay?
+
+## Códigos para contestar a las preguntas
+
+```{r}
+#| eval: false
+#| echo: true
+library(rio)
+library(skimr)
+
+topo = import("dados/ej_visualizacion_datos.xlsx")
+
+topo = topo %>%
+  janitor::clean_names()
+
+topo %>%
+  skimr::skim()
+
+```
+
 

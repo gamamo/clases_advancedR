@@ -20,7 +20,7 @@ Vamos a utilizar los seguientes paquetes en R
 
 ::: columns
 ::: {.column width="20%"}
-![](C:/Users%5Cgabri%5CDropbox%5CpostdocINECOL%5CCurso%20Analisis%20avanzados%20en%20R%5Cclases_advancedR%5Cimages%5Cbiscale.png)
+![](imgs/biscale.png)
 :::
 
 ::: {.column width="80%"}
@@ -164,7 +164,7 @@ head(data$bi_class)
 
 ::: columns
 ::: {.column width="50%"}
-![](C:/Users%5Cgabri%5CDropbox%5CpostdocINECOL%5CCurso%20Analisis%20avanzados%20en%20R%5Cclases_advancedR%5Cimages%5Cayy.png)
+![](imgs/ayy.png)
 :::
 
 ::: {.column width="50%"}
