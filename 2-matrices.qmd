@@ -14,7 +14,6 @@ highlight-style: arrow-light
 ![](https://i.imgflip.com/lnf8o.jpg)
 
 ## 
-
 -   Es el formato más comun de formatación de datos ecológicos
 -   Se torno popular en ecologia con el desarollo de mejores computadoras
 -   Gran parte del lenguaje de los softwares está basada en notaciones de matrices 
@@ -27,6 +26,7 @@ highlight-style: arrow-light
 - numero de filas tiene que ser igual al numero de columnas
 
 ![](C:/Users%5Cgabri%5CDropbox%5CpostdocINECOL%5CCurso%20Analisis%20avanzados%20en%20R%5Cclases_advancedR%5Cimages%5Camatrix.jpg)
+
 
 ## Matrices de una columna (o *vectores*)
 - *scaling* que usamos en las PCAs
@@ -41,7 +41,6 @@ highlight-style: arrow-light
 - En las estadísticas empleadas (lm, pglm, glm etc)
 
 ## Matrices en R
-
 -   `matrix()`vs. `data.frame()`
 -   `matrix()`: solo numeros o solo caracteres
 -   `data.frame()`: mix de tipos numeros y caracteres
@@ -67,7 +66,6 @@ matrix(data=NA, nrow = 2, ncol=2,dimnames = list(c("row1","row2"),
 ```
 
 ## 
-
 -   *byrow*
 -   define como se da el llenado de la matrix
 -   si `byrow=T`, el llenad se da por filas
@@ -78,7 +76,7 @@ matrix(vec, nrow = 3, byrow = T )
 ```
 
 ## 
--   si `byrow=F`, el llenado se da por columnas
+- si `byrow=F`, el llenado se da por columnas
 
 ```{r}
 vec = c("a","b","c","d","e","f")
@@ -89,6 +87,7 @@ matrix(vec, nrow = 3, byrow = F )
 - paquete `Matrix`
 
 ![](C:/Users%5Cgabri%5CDropbox%5CpostdocINECOL%5CCurso%20Analisis%20avanzados%20en%20R%5Cclases_advancedR%5Cimages%5sparse.jpg)
+
 [Fuente](https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/bcd746dca8cbf0d5a890f01a72d8ef64_MIT18_335JS19_lec24.pdf)
 
 ##
@@ -106,4 +105,4 @@ matrix(vec, nrow = 3, byrow = F )
 ![](https://besjournals.onlinelibrary.wiley.com/cms/asset/9d1bd0e9-bf6b-4c35-ba9d-6cbf31a48d2e/mee313478-fig-0002-m.jpg)
 
 ##
--   Pueden ser transformadas en objetos de distancias (`dist()`)
+-   Pueden ser transformadas en objetos de distancias `dist()`

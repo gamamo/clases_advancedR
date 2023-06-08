@@ -1,0 +1,114 @@
+---
+title: "Mapas bivariados"
+author: "Gabriel Massaine Moulatlet"
+institute: Instituto de Ecología, A.C.
+format: revealjs
+editor: visual
+highlight-style: arrow-light
+---
+
+# Matrices
+
+## Matrices en Ecología
+
+![](https://i.imgflip.com/lnf8o.jpg)
+
+## 
+-   Es el formato más comun de formatación de datos ecológicos
+-   Se torno popular en ecologia con el desarollo de mejores computadoras
+-   Gran parte del lenguaje de los softwares está basada en notaciones de matrices 
+
+## La matrix
+![](C:/Users%5Cgabri%5CDropbox%5CpostdocINECOL%5CCurso%20Analisis%20avanzados%20en%20R%5Cclases_advancedR%5Cimages%5Cmatrix.jpg)
+
+## La matrix de asociación
+- Similitud o Distancias
+- numero de filas tiene que ser igual al numero de columnas
+
+![](C:/Users%5Cgabri%5CDropbox%5CpostdocINECOL%5CCurso%20Analisis%20avanzados%20en%20R%5Cclases_advancedR%5Cimages%5Camatrix.jpg)
+
+
+## Matrices de una columna (o *vectores*)
+- *scaling* que usamos en las PCAs
+- Para comparar diferentes vectores
+
+##
+![](C:/Users%5Cgabri%5CDropbox%5CpostdocINECOL%5CCurso%20Analisis%20avanzados%20en%20R%5Cclases_advancedR%5Cimages%5vector.jpg)
+
+## Son muy usadas en los analisis de ecologia
+- Analisis multivariadas en ecologia de comunidades
+- Para sumarizar grandes conjuntos de datos
+- En las estadísticas empleadas (lm, pglm, glm etc)
+
+## Matrices en R
+-   `matrix()`vs. `data.frame()`
+-   `matrix()`: solo numeros o solo caracteres
+-   `data.frame()`: mix de tipos numeros y caracteres
+
+## Estructura
+-   una matriz tiene 2 dimensiones, formadas por filas y columnas
+
+```{r}
+#| eval: true
+#| echo: true
+
+matrix(data=NA, nrow = 2, ncol=2)
+
+```
+
+## los argumentos
+-   *dimnames*
+-   una lista con los nombres de las filas y de las columnas, respectivamente
+
+```{r}
+#| eval: true
+#| echo: true
+
+matrix(data=NA, nrow = 2, ncol=2,dimnames = list(c("row1","row2"),
+                                                 c("col1", "col2")))
+```
+
+## 
+-   *byrow*
+-   define como se da el llenado de la matrix
+-   si `byrow=T`, el llenad se da por filas
+
+```{r}
+#| eval: true
+#| echo: true
+vec = c("a","b","c","d","e","f")
+matrix(vec, nrow = 3, byrow = T )
+```
+
+## 
+- si `byrow=F`, el llenado se da por columnas
+```{r}
+#| eval: true
+#| echo: true
+vec = c("a","b","c","d","e","f")
+matrix(vec, nrow = 3, byrow = F )
+```
+
+## *Sparse* vs. *Dense* matrices
+- paquete `Matrix`
+
+![](C:/Users%5Cgabri%5CDropbox%5CpostdocINECOL%5CCurso%20Analisis%20avanzados%20en%20R%5Cclases_advancedR%5Cimages%5sparse.jpg)
+
+[Fuente](https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/bcd746dca8cbf0d5a890f01a72d8ef64_MIT18_335JS19_lec24.pdf)
+
+##
+- Funciones aplicadas a ambos tipos de matrices producen los mismos resultado
+- Tiene ventajas en el tiempo de procesamiento de datos
+
+## En ecología de comunidades
+- Matrices son usadas para guardar los elementos de analisis de diversidad
+- Tiene muchos ceros (presencia-ausencia)
+- R tiene que guardar cada valor en matrices del tipo *dense*
+- Matrices del tipo *sparse* no guardan los ceros
+
+## Funciones útiles en el paquete `phyloregion`
+- Para datos de comunidades (sitios x species)
+![](https://besjournals.onlinelibrary.wiley.com/cms/asset/9d1bd0e9-bf6b-4c35-ba9d-6cbf31a48d2e/mee313478-fig-0002-m.jpg)
+
+##
+-   Pueden ser transformadas en objetos de distancias `dist()`
