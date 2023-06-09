@@ -17,7 +17,6 @@ Vamos a utilizar los seguientes paquetes en R
 
 -   skimR
 -   janitor
--   easystats
 -   report
 
 ![](imgs/figlogos.png)
@@ -306,7 +305,7 @@ df%>%
 
 ![](imgs/skimout.jpg)
 
-## Función adicional: `dplyr::glimpse()`
+## Funciónes adicionales: `dplyr::glimpse()`
 
 ```{r}
 #| eval: true
@@ -317,6 +316,19 @@ df%>%
   glimpse()
 
 ```
+
+## `easystats::report`
+
+```{r}
+#| eval: true
+#| echo: true
+library(easystats)
+
+df%>%
+  report()
+```
+
+
 # Tarea
 
 ## 

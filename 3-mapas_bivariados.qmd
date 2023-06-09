@@ -33,26 +33,59 @@ Vamos a utilizar los seguientes paquetes en R
 :::
 :::
 
-## Según la wikipedia
+## Según la wikipedia..
 
-> mapa coropleto o mapa de coropletas, es un tipo de mapa temático en el que las áreas se sombrean de distintos colores, frecuentemente de la misma gama cromática, que representan distintos valores de una variable estadística característica.
+- Mapas bivariados también son conocidos por *Mapa coropleto* o *Mapa de coropletas*
+
+>Es un tipo de mapa temático en el que las áreas se sombrean de distintos colores, frecuentemente de la misma gama cromática, que representan distintos valores de una variable estadística característica.
 
 ## 
 
 -   Mapas bivariados son útiles para graficar dos variables
 
 ![](https://www.joshuastevens.net/images/js_finalBivariateMap.png)
+## Son bastante comunes para reportar resultados de elecciones
 
-## 
+![](imgs/para.png){fig-align="center"}
 
+## También usados para reportar indicadores socio-económicos
+
+![](imgs/dengue.png){fig-align="center"}
+
+## Hay otros ejemplos: colores y marcaciones
+![](imgs/tabaco.png){fig-align="center"}
+## Hay otros ejemplos: colores y area
+![](imgs/happy.png){fig-align="center"}
+## Leyendas triangulares
+
+[Sabatini et al. 2022](https://onlinelibrary.wiley.com/doi/full/10.1111/ddi.13158)
+![](imgs/sabatini.jpg){fig-align="center"}
+
+## Formatos complejos
+
+[Sabatini et al. 2022](https://onlinelibrary.wiley.com/doi/full/10.1111/ddi.13158)
+![](imgs/forest.jpg){fig-align="center"}
+## RGB
+
+![](imgs/dengue3.png){fig-align="center"}
+
+## Leyendas rectangulares
+[Peixoto et al. 2017](https://onlinelibrary.wiley.com/doi/abs/10.1111/geb.12561)
+![](imgs/peixoto.png){fig-align="center"}
+
+## Pero lo más importante es que la información esté clara
+![](imgs/dengue2.png){fig-align="center"}
+
+## Producir mapas bivariados
 -   La idea central es buscar una manera de como combinar estas dos variables
 -   Escalas diferentes, número diferente de categorias etc...
 -   Mapas bivariados son hechos en dos pasos:
     1.  Categorización de las variables según alguna estadística
     2.  Preparación de una leyenda en base "paleta" de colores
 
-## Categorización de variables
+# 1. Categorizacióon de varibales
 
+##
 -   Normalizar los datos en conteos o proporciones
 -   las funciones `cut()` y `summary()` del R base pueden ser útiles
 -   vamos usar la base de datos *iris*
@@ -149,6 +182,8 @@ head(data$bi_class)
 ```
 :::
 :::
+
+# 2. Preparación de leyenda bivariada
 
 ## Preparación de una leyenda
 
@@ -427,5 +462,183 @@ map + leg
 ::: {.column width="50%"}
 ![](https://chris-prener.github.io/biscale/reference/figures/biscale.002.jpeg)
 :::
-
 :::
+
+
+# Tarea
+
+## 
+
+![](imgs/homework.jpg) {fig-align="center"}
+
+## Vamos hacer el mapa bivariado de la diversidad filogenetica de angiospermas en la Peninsula de Yucatán
+
+1. Usando el paquete `biscale`
+2. Manualmente
+
+
+
+##
+```{r}
+#| eval: false
+#| echo: true
+
+# Los paquetes que vamos a utilizar
+library(sf)
+library(ggplot2)
+library(rnaturalearth)
+library(tidyterra)
+library(classInt)
+library(biscale)
+
+```
+
+## Cargar el mapa base
+```{r}
+#| eval: false
+#| echo: true
+
+wrld <- ne_countries(scale = "small",returnclass = "sf")
+
+```
+
+## Cargar los datos y ajustar el CRS
+```{r}
+#| eval: false
+#| echo: true
+
+resu = read.csv(file="dados_bivariate_maps.csv")
+geo = st_as_sf(resu,coords = c(1,2))
+st_crs(geo)= st_crs(wrld)
+
+```
+
+## 1. Preparar el mapa usando el paquete `biscale`
+- Calcular las categorias
+
+```{r}
+#| eval: false
+#| echo: true
+
+cat <- bi_class(geo, x = TBD, y = PBD, style = "quantile", dim = 3)
+```
+
+## Preparar la leyenda
+```{r}
+#| eval: false
+#| echo: true
+
+leg =bi_legend(pal = "DkBlue",
+          dim = 3,
+          xlab = "Taxonomic beta",
+          ylab = "Phylogenetic beta",
+          size = 12)
+```
+
+## Preparar el mapa
+```{r}
+#| eval: false
+#| echo: true
+
+map =ggplot(data=wrld)+
+  geom_sf()+
+  geom_sf(data = cat, aes(color =  bi_class), size = 10, shape=15,show.legend = FALSE) +
+  bi_scale_color(pal = "DkBlue", dim = 3)+
+  theme_bw()+
+  theme(panel.grid.major = element_blank())+
+  coord_sf(xlim = c(-95, -86), ylim = c(16, 25), expand = FALSE)
+map
+```
+
+## 2. Manualmente
+
+- Crear un *grid*
+```{r}
+#| eval: false
+#| echo: true
+
+d<-expand.grid(x=1:3,y=1:3)
+d
+```
+## Crear la leyenda
+
+```{r}
+#| eval: false
+#| echo: true
+
+leg2 =ggplot(d,aes(x,y))+
+  
+  #crear el *tile* jugando con los parámetros de colores *fill* y *alpha*
+  geom_tile( aes(fill=atan(y/x),alpha=x+y))+
+  scale_fill_viridis_c()+
+  
+  #Definir los temas
+  theme(legend.position="none",
+        panel.background=element_blank(),
+        axis.text.y = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks = element_blank(),
+        axis.title.x = element_text(size=15,hjust=0.6),
+        axis.title.y = element_text(size=15),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_blank(),
+        plot.background = element_rect(fill = "white",color="white"))+
+ 
+  # Definir los titulos de los ejes
+  labs(x="PBD",
+       y="TBD")+
+  
+  # Decir que los tiles deben se cuadrados
+  coord_equal()+
+  
+  # Poner flechitas
+  geom_segment(aes(x=1, xend = 3 , y=0, yend = 0), size=1.5,
+               arrow = arrow(length = unit(0.6,"cm"))) +
+  geom_segment(aes(x=0, xend = 0 , y=1, yend = 3), size=1.5,
+               arrow = arrow(length = unit(0.6,"cm"))) 
+leg2
+
+```
+
+## Categorizar los datos
+
+```{r}
+#| eval: false
+#| echo: true
+catTBD = classInt::classIntervals(geo$TBD,3,style = "quantile")
+catPBD = classInt::classIntervals(geo$PBD,3,style = "quantile")
+
+# Juntar las columnas
+geo$catTBD = classInt::findCols(catTBD)
+geo$catPBD= classInt::findCols(catPBD)
+```
+
+## Hacer las columnas para el *alpha* (transparencia) y *color*
+```{r}
+#| eval: false
+#| echo: true
+geo$alpha = as.character(geo$catTBD + geo$catPBD)
+geo$color  = as.character(atan(geo$catTBD/geo$catPBD))
+```
+
+## Hacer el mapa
+```{r}
+#| eval: false
+#| echo: true
+map2 = ggplot()+
+  geom_sf(data=wrld)+
+  geom_sf(data = geo,aes(color=color,alpha=alpha),shape=15, size=10,show.legend = FALSE)+
+  scale_color_viridis_d()+
+  theme_bw()+
+  theme(panel.grid.major = element_blank())+
+  coord_sf(xlim = c(-95, -86), ylim = c(16, 25), expand = FALSE)
+map2
+```
+
+## Agregar la leyenda
+```{r}
+#| eval: false
+#| echo: true
+map + leg
+map2 + leg2
+```
