@@ -2,7 +2,9 @@
 title: "Exploración rápida de datos"
 author: "Gabriel Massaine Moulatlet"
 institute: Instituto de Ecología, A.C.
-format: revealjs
+format: 
+  revealjs:
+    slide-number: true
 editor: visual
 highlight-style: arrow-light
 ---

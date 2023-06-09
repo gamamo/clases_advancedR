@@ -2,7 +2,9 @@
 title: "Mapas bivariados"
 author: "Gabriel Massaine Moulatlet"
 institute: Instituto de Ecología, A.C.
-format: revealjs
+format: 
+  revealjs:
+    slide-number: true
 editor: visual
 highlight-style: arrow-light
 ---
@@ -198,7 +200,7 @@ bi_legend(pal = "GrPink",
 
 ## 
 
-![](https://chris-prener.github.io/biscale/reference/figures/biscale.002.jpeg){{fig-align="center"}
+![](https://chris-prener.github.io/biscale/reference/figures/biscale.002.jpeg){fig-align="center"}
 
 ## Manos a la obra!
 
@@ -249,7 +251,7 @@ p1 + inset_element(p2, 0.6, 0.6, 1, 1) \# left, top, right, bottom
 
 ## Como hacer mapas bivariados sin usar el paquete `biscale`
 
--   el tutorial de \[Len Kiefer\] (http://lenkiefer.com/2017/04/24/bivariate-map/)
+-   el tutorial de [Len Kiefer](http://lenkiefer.com/2017/04/24/bivariate-map/)
 -   usar el paquete `classInt` para categorizar los datos
 -   usar el esquema de colores de la leyenda para preparar el mapa
 
@@ -264,7 +266,7 @@ p1 + inset_element(p2, 0.6, 0.6, 1, 1) \# left, top, right, bottom
 #| echo: true
 library(tidyr)
 
-expand.grid(x=1:3,y=1:3)
+d=expand.grid(x=1:3,y=1:3)
 
 ```
 
@@ -274,6 +276,7 @@ expand.grid(x=1:3,y=1:3)
 #| eval: true
 #| echo: true
 
+library(ggplot2)
 ggplot(d, aes(x,y))+
   geom_tile(aes(alpha=x+y,fill=atan(y/x)))+
   scale_fill_viridis_c()+
@@ -410,7 +413,8 @@ map + leg
 
 ## Se parecen?
 
-::: column
+::: columns
+
 ::: {.column width="50%"}
 ```{r}
 #| eval: true
@@ -423,4 +427,5 @@ map + leg
 ::: {.column width="50%"}
 ![](https://chris-prener.github.io/biscale/reference/figures/biscale.002.jpeg)
 :::
+
 :::
