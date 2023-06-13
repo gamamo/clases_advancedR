@@ -11,6 +11,11 @@ highlight-style: arrow-light
 
 # Exploración de datos
 
+## 
+- Buscar informaciones generales sobre los datos
+- Con *Big Data* es poco probable lograr visualizar toda la información en las matrices
+- Idenficar problemas de forma y contenido
+
 ## Paquetes
 
 Vamos a utilizar los seguientes paquetes en R
@@ -23,7 +28,7 @@ Vamos a utilizar los seguientes paquetes en R
 
 ------------------------------------------------------------------------
 
-> "Los científicos de datos dedican entre el 50 % y el 80 % de su tiempo a este labor más mundano de recopilar y preparar datos digitales rebeldes, antes de que puedan explorarse en busca de pepitas útiles." - Anonymous (2023)
+> "Los científicos de datos dedican entre el 50 % y el 80 % de su tiempo a este labor más mundano de recopilar y preparar datos digitales rebeldes, antes de que puedan explorarse en busca de pepitas útiles." - Internet (2023)
 
 ![](imgs//meme_data.jpg){fig-align="center"}
 
@@ -34,6 +39,149 @@ Vamos a utilizar los seguientes paquetes en R
 -   Luego, explorar los datos de manera rápida y eficiente para saber si:
     1)  Fueron importados correctamente
     2)  Resumir características de los datos
+
+## En R
+
+- R identifica de manera automatica las diferencias entre los tipos de información
+- Números, caracteres, espacios, factores...
+- Por eso la importancia de visualizar rapidamente los posible problemas
+
+# Funciones de Visualización de datos
+
+## skimR
+
+::: columns
+::: {.column width="40%"}
+![](imgs/skimr.png)
+:::
+
+::: {.column width="60%"}
+-   Es un paquete de basicamente una única función `skim()`
+-   La función `skim()` es útil para sumarizar conjuntos de datos
+-   Es un combo de algunas funciones que de R base, como `str()`, `class()`, `summary()`
+-   Documentació [aqui](https://cran.r-project.org/web/packages/skimr/vignettes/skimr.html) y [aqui](https://docs.ropensci.org/skimr/articles/extending_skimr.html)
+:::
+:::
+
+## 
+
+Vamos aplicar la función `summary()` sobre nuestro conjunto de datos *df*
+
+```{r}
+#| eval: true
+#| echo: true
+
+df <- data.frame(nacionalidad = c("ARG","NOR","FRA","ARG","ARG","ARG","ARG"),
+                 jugadores = c('Messi', 'Haaland', 'Benzema', 'Alvarez', 'Lautaro',
+                               'DiMaria','Maradona'),
+                 goles = c(12, 30, 30, 12, 12,30, NA),
+                 partidos = c(15, 20, 20, 20, 18,20, NA))
+summary(df)
+
+```
+
+## Ahora vamos aplicar la función `skim()` sobre un conjunto de datos *df*
+- Me ayuden con la interpretación
+```{r}
+#| eval: true
+#| echo: true
+
+library(tidyverse)
+library(skimr)
+
+df%>%
+  skim()
+
+```
+
+## 
+
+![](imgs/skimout.jpg)
+
+## Conjuntos de datos muy grandes
+
+```{r}
+#| eval: true
+#| echo: true
+
+library(rio)
+birds = import(file = "dados/birds.csv" )
+```
+
+## QUIZ:
+- Estos son datos de mi posdoc, de interación (binárias: 0s o 1s) aves-plantas
+- Use la función `skim` y conteste:
+- ¿Cuál el número de especies plantas y de aves
+- ¿Hay datos faltantes? 
+- ¿Hay datos raros en las interaciones?
+
+## Vamos a identificar los NAs
+. . .
+```{r}
+#| eval: true
+#| echo: true
+library(tidyr)
+
+birds%>%
+  filter(is.na(birds))
+
+```
+
+## ¿En cuál fila están los valores faltantes?
+
+. . .
+```{r}
+#| eval: true
+#| echo: true
+
+which(birds$birds=="")
+```
+
+
+## Funciónes adicionales: `dplyr::glimpse()`
+```{r}
+#| eval: true
+#| echo: true
+library(dplyr)
+
+df%>%
+  glimpse()
+
+```
+
+##
+```{r}
+#| eval: true
+#| echo: true
+library(dplyr)
+
+birds%>%
+  glimpse()
+```
+
+## `easystats::report`
+
+```{r}
+#| eval: true
+#| echo: true
+library(easystats)
+
+df%>%
+  report()
+```
+
+##
+- ¿Qué otra información les pareció relevant de la función `report`?
+```{r}
+#| eval: true
+#| echo: true
+library(easystats)
+
+birds%>%
+  report()
+```
+
+# Extraer información de los datos
 
 ## Janitor
 
@@ -46,7 +194,7 @@ Vamos a utilizar los seguientes paquetes en R
 -   Paquete con dos tipos de funciones
     -   Limpieza de datos (vamos ver en la seguiente clase)
     -   Preparación de tablas de conteos (contingencia) 
-    -   Documentación [aqui](https://sfirke.github.io/janitor/articles/janitor.html)
+    -   [Documentación](https://sfirke.github.io/janitor/articles/janitor.html)
 :::
 :::
 
@@ -57,13 +205,13 @@ Esta función sirve para generar tablas de contingencia, o sea, con frecuencias,
 ```{r}
 #| eval: true
 #| echo: true
-# vamos crear un data.frame
+# vamos usar nuestro df
 df <- data.frame(nacionalidad = c("ARG","NOR","FRA","ARG","ARG","ARG","ARG"),
                  jugadores = c('Messi', 'Haaland', 'Benzema', 'Alvarez', 'Lautaro',
                                'DiMaria','Maradona'),
                  goles = c(12, 30, 30, 12, 12,30, NA),
                  partidos = c(15, 20, 20, 20, 18,20, NA))
-print(df)
+df
 ```
 
 ## Vamos a probar algunas de sus habilidades en R...
@@ -71,21 +219,27 @@ print(df)
 - Usando la función `table()`:
   - Cuantos tipos de "goles" hay?
   - Cuantos goles cada jugador ha hecho?
+  
+## ¿Cuantos tipos de "goles" hay?
+```{r}
+#| eval: true
+#| echo: true
 
-## Qué les salió?
+table(df$goles)
+```
+
+
+## ¿Cuantos goles cada jugador ha hecho?
 
 ```{r}
 #| eval: true
 #| echo: true
 
-# Cuantas "categorias" de goles hay?
-table(df$goles)
-
 # Cruzar la información "jugadores" y "goles"
 table(df$jugadores,df$goles)
 ```
 
-## La función `table()` permite calcular proporciones
+## La función `table()` permite calcular proporciones 
 
 ```{r}
 #| eval: true
@@ -112,6 +266,7 @@ class(tab)
 
 -   Usa la estructura tidyverse
 -   El output nos da informaciones más relevantes
+-   Es más fácil de trabajar que la función `table()`
 
 ## La función `janitor::tabyl()`
 
@@ -163,6 +318,21 @@ df %>%
 table(df$goles, useNA = "always")
 ```
 
+## QUIZ:
+- Use la función `tabyl()` para saber cuál es la especies de ave con más occurrencias
+
+::: {.incremental}
+```{r}
+#| eval: true
+#| echo: true
+
+birds %>%
+  tabyl(birds)%>%
+  arrange(desc(n))
+  
+```
+:::
+
 # Uso de la función `janitor::adorn_()`
 
 ## Algunas funciones derivadas útiles
@@ -171,6 +341,7 @@ table(df$goles, useNA = "always")
 -   `adorn_percentages()`
 -   `adorn_rounding(digits=1)`
 
+## `adorn_totals()`
 ```{r}
 #| eval: true
 #| echo: true
@@ -204,6 +375,7 @@ df %>%
 -   `adorn_pct_formatting()` - formatar los valores calculados
 -   ambas funciones pueden ser usadas una trás otra
 
+##
 ```{r}
 #| eval: true
 #| echo: true
@@ -246,6 +418,10 @@ df %>%
 fac <- as.factor(c("muy fuerte","muy fuerte","muy fuerte","fuerte","débil","débil","muy débil","muy débil"))
 
 top_levels(fac)
+
+```
+. . .
+```{r}
 top_levels(fac,n=1) # n es el numero de níveles en las categorias *bajo* y *alto*
 ```
 
@@ -258,82 +434,12 @@ top_levels(fac,n=1) # n es el numero de níveles en las categorias *bajo* y *alt
 ##
 ![](imgs/bernie.jpg)
 
-# Funciones de Visualización de datos
-
-## skimR
-
-::: columns
-::: {.column width="40%"}
-![](imgs/skimr.png)
-:::
-
-::: {.column width="60%"}
--   Es un paquete de basicamente una única función `skim()`
--   La función `skim()` es útil para sumarizar conjuntos de datos muy grandes
--   Es un combo de algunas funciones que de R base, como `str()`, `class()`, `summary()`
--   Documentación  [aqui](https://cran.r-project.org/web/packages/skimr/vignettes/skimr.html) y [aqui](https://docs.ropensci.org/skimr/articles/extending_skimr.html)
-:::
-:::
-
-## 
-
-Vamos aplicar la función `summary()` sobre nuestro conjunto de datos *df*
-
-```{r}
-#| eval: true
-#| echo: true
-
-summary(df)
-
-```
-
-## 
-
-Ahora vamos aplicar la función `skim()` sobre nuestro conjunto de datos *df*
-
-```{r}
-#| eval: true
-#| echo: true
-
-library(skimr)
-
-df%>%
-  skim()
-```
-
-## 
-
-![](imgs/skimout.jpg)
-
-## Funciónes adicionales: `dplyr::glimpse()`
-
-```{r}
-#| eval: true
-#| echo: true
-library(dplyr)
-
-df%>%
-  glimpse()
-
-```
-
-## `easystats::report`
-
-```{r}
-#| eval: true
-#| echo: true
-library(easystats)
-
-df%>%
-  report()
-```
-
 
 # Tarea
 
 ## 
 
-![](imgs/homework.jpg) {fig-align="center"}
+![](imgs/homework.jpg)
 
 ## Contexto
 
@@ -345,7 +451,7 @@ Para cada parcela se calculó 3 valores (tipo 2, 3 y 4) de un descriptor de la h
 
 El colega necesita saber cuál de los 3 valores podrá ser usado como variable descriptora en su estudio. En la figura abajo se ve el efecto de la inundación en el Rio Madeira sobre un modelo digital de elevación
 
-![](imgs/comp4.png) {fig-align="center"}
+![](imgs/comp4.png) {fig-align="center",width=80%}
 
 ## Instrucciones
 

@@ -25,21 +25,16 @@ highlight-style: arrow-light
 
 ## La matrix de asociación
 - Similitud o Distancias
-- numero de filas tiene que ser igual al numero de columnas
+- El número de filas tiene que ser igual al numero de columnas
 
 ![](imgs/amatrix.jpg)
 
-## Matrices de una columna (o *vectores*)
-- *scaling* que usamos en las PCAs
-- Para comparar diferentes vectores
-
-![](imgs/vector.jpg)
 
 ## Son muy usadas en los analisis de ecologia
 - Analisis multivariadas en ecologia de comunidades
 - Para sumarizar grandes conjuntos de datos
 - En las estadísticas empleadas en modelos estadísticos (lm, pglm, gls etc)
-- Muy comunes en macroecología (matrix de presencia-ausencia)
+- Comunes en macroecología (matrix de presencia-ausencia)
 
 ## Matrices en R
 -   `matrix()`vs. `data.frame()` vs. `array()`
@@ -60,17 +55,34 @@ matrix(data=NA, nrow = 2, ncol=2)
 ```
 
 ## Pueden encontrar las diferencias entre `matrix()` y `array()`?
-- Qué diferencia(s) econtraron?
+- ¿Qué diferencia(s) encontraron?
 ```{r}
 #| eval: true
 #| echo: true
 
-a <- matrix(1:16, ncol = 3, nrow = 2)
+a <- matrix(1:6, ncol = 3, nrow = 2)
 b <- array(1:12, c(2, 3, 4))
-diag(a)
-
 ```
 
+##
+::: columns
+::: {.column width="50%"}
+```{r}
+#| eval: true
+#| echo: true
+a <- matrix(1:6, ncol = 3, nrow = 2)
+a
+```
+:::
+:::{.column width="50%"}
+```{r}
+#| eval: true
+#| echo: true
+b <- array(1:12, c(2, 3, 4))
+b
+```
+:::
+:::
 
 ## los argumentos
 -   *dimnames*
@@ -137,6 +149,8 @@ diag(a)
 ```
 
 ## Operaciones con escalares
+:::columns
+:::{.column width="50%"}
 ```{r}
 #| eval: true
 #| echo: true
@@ -144,10 +158,22 @@ diag(a)
  d <- c(0,0,1)
 
  a + d
+
+
+```
+:::
+::: {.column width="50%"}
+```{r}
+#| eval: true
+#| echo: true
+ a <- matrix(1:9, nrow=3)
+ d <- c(0,0,1)
  
  a + 1
 
 ```
+:::
+:::
 
 ## pero...
 - a + b y a + b2 son iguales?
@@ -157,19 +183,20 @@ diag(a)
 
  a <- matrix(1:9, nrow=3)
  b <- 1
- b2 <- matrix(b, nrow=1)
- 
  a + b
 ```
 
-## Y esta suma, sale bien?
+## Y esta suma, ¿sale bien?
 ```{r}
 #| eval: false
 #| echo: true
+ a <- matrix(1:9, nrow=3)
+ b2 <- matrix(b, nrow=1)
  
  a + b2
 ```
 ## Multiplicación de matrices
+- El comando `%*%` se aplica par las multiplicaciones
 
 ```{r}
 #| eval: true
@@ -180,18 +207,48 @@ b <- diag(rep(1,3))
 d <- matrix(c(0,0,1), nrow=3)
 ```
 
-El comando `%*%` se aplica par las multiplicaciones
+##
+```{r}
+#| eval: true
+#| echo: true
 
+a <- matrix(1:9, nrow=3)
+b <- diag(rep(1,3))
+d <- matrix(c(0,0,1), nrow=3)
+
+ a %*% b # ¿Salió bien?
+```
+
+##
+```{r}
+#| eval: true
+#| echo: true
+
+a <- matrix(1:9, nrow=3)
+b <- diag(rep(1,3))
+d <- matrix(c(0,0,1), nrow=3)
+
+ a %*% d # ¿esta?
+```
+
+##
 ```{r}
 #| eval: false
 #| echo: true
 
- a %*% b # Salió bien?
- a %*% d # esta?
- d %*% a # y esta?
+a <- matrix(1:9, nrow=3)
+b <- diag(rep(1,3))
+d <- matrix(c(0,0,1), nrow=3)
+
+ d%*%a # ¿y esta?
 ```
 
+
 ## División de matrices no existen, se las multiplica por el inverso
+
+![](imgs/invma.png)
+
+##
 - La función `solve()` calcula el inverso
 - No confundir con `t()`, que es la función para trasponer la matriz
 ```{r}
@@ -204,12 +261,12 @@ ainv
 ```
 
 ##
+- Pueden mirar el resultado usando la función `round()`...queda mejor
 ```{r}
 #| eval: true
 #| echo: true
 a %*% ainv
 ```
-Pueden mirar el resultado usando la función `round()`...queda mejor
 
 
 ## QUIZ
@@ -233,16 +290,31 @@ N = matrix(c(5,3,1), nrow=3,ncol=1,byrow=F,dimnames = list(c("A","B","C")))
                                                                    
 N
 ```
-- ?Cuantos contaminantes I y II consume diariamente?
+
+## 
+- ¿Cuántos contaminantes I y II consume diariamente?
 - Tip: Mirar el producto de M x N
+
+
+```{r}
+#| eval: true
+#| echo: true
+M = matrix(c(2,3,4,0,1,2), nrow=2,ncol=3,byrow=T,dimnames = list(c("I","II"),
+                                                                   c("A", "B","C")))
+N = matrix(c(5,3,1), nrow=3,ncol=1,byrow=F,dimnames = list(c("A","B","C")))
+```
+. . .
+```{r}
+M%*%N
+```
 
 # Tipos de matriz en R
 
 ## *Sparse* vs. *Dense* matrices
 - paquete `Matrix`
-- Documentación [aqui](https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/bcd746dca8cbf0d5a890f01a72d8ef64_MIT18_335JS19_lec24.pdf)
+- [Documentación](https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/bcd746dca8cbf0d5a890f01a72d8ef64_MIT18_335JS19_lec24.pdf)
 
-![](imgs/sparse.png){fig-align="center"}
+![](imgs/sparse_dense.gif){fig-align="center"}
 
 
 ## *Sparse* vs. *Dense* matrices
@@ -264,6 +336,8 @@ M2[, c(2,4:6)] <- 0
 M2[2, ] <- 0
 M2 <- rbind(0, M2, 0)
 M2[1:2,2] <- M2[3,4:5] <- NA
+
+M2
 ```
 :::
 ::: {.column width="50%"}
@@ -292,7 +366,7 @@ sM
 - R tiene que guardar cada valor en matrices del tipo *dense*
 - Matrices del tipo *sparse* no guardan los ceros
 
-## Funciones útiles en el paquete `phyloregion`
+## Ejemplo: funciones útiles en el paquete `phyloregion`
 - Para datos de comunidades (sitios x species)
 - [Phyloregion](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.13478g)
 
@@ -307,9 +381,10 @@ sM
 #| echo: true
 x <- matrix(rnorm(25), nrow = 5)
 y=dist(x)
-print(y)
+y
 ```
 
+##
 ```{r}
 #| eval: true
 #| echo: true
@@ -330,8 +405,7 @@ library(vegan)
 
 data(varespec)
 vare.dist <- vegdist(varespec)
-class(vare.dist)
-
+vare.dist
 ```
 
 # Visualización de matrices
@@ -404,13 +478,15 @@ molu.ord<-molu.ord1[,order(molu.medias,decreasing=T)]
 #| echo: true
 
 library(ggpubr)
-
 ggballoonplot(t(molu.ord))
 
 ```
 ## otras opiciones de gráficos genéricos
 - ver el github de Cristian Dambros, de la UFSM-BRA
 - la función [poncho](https://raw.githubusercontent.com/csdambros/R-functions/master/poncho.R)
+
+##
+![](imgs/poncho.png)
 
 ## Cuando no hay variables ambientales
 - Igual se puede ordenar las matrices para visualizar los patrones
@@ -419,7 +495,7 @@ ggballoonplot(t(molu.ord))
 
 ## Transformar matrices: formatos *long* y *wide*
 - Habia una excelente documentación [aqui](https://seananderson.ca/2013/10/19/reshape/)
-- Sin emmbargo el paquete `reshape2` ya no se va actualizar
+- Sin emmbargo el paquete `reshape2` ya no se va actualizar..
 - Su funciones fueron incorporadas por el paqute *tidyr*
 - Pero hay opciones en el paquete [`data.table`](https://cran.r-project.org/web/packages/data.table/vignettes/datatable-reshape.html)
 
@@ -468,6 +544,6 @@ mol_long %>%
 ## En Resumen
 ![](imgs/whatever.jpg)
 
-## En serio
+## No, voy en serio!
 - La matriz es una de los formatos esenciales para los analisis ecológicos
 - Manejar y visualizar información de matrices puede revelar informaciones importantes de los datos antes mismo de los análisis
