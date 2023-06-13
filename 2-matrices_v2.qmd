@@ -136,16 +136,6 @@ diag(a)
  a - b
 ```
 
-## Operaciones con matrices: Diferencia
-```{r}
-#| eval: true
-#| echo: true
- a <- matrix(1:9, nrow=3)
- b <- diag(rep(1,3))
- 
- a - b
-```
-
 ## Operaciones con escalares
 ```{r}
 #| eval: true
@@ -170,10 +160,15 @@ diag(a)
  b2 <- matrix(b, nrow=1)
  
  a + b
- a + b2
-
 ```
 
+## Y esta suma, sale bien?
+```{r}
+#| eval: false
+#| echo: true
+ 
+ a + b2
+```
 ## Multiplicación de matrices
 
 ```{r}
@@ -208,10 +203,11 @@ ainv <- solve(a)
 ainv
 ```
 
+##
 ```{r}
 #| eval: true
 #| echo: true
-a %*% ainx
+a %*% ainv
 ```
 Pueden mirar el resultado usando la función `round()`...queda mejor
 
@@ -227,6 +223,7 @@ M = matrix(c(2,3,4,0,1,2), nrow=2,ncol=3,byrow=T,dimnames = list(c("I","II"),
 M
 ```
 
+##
 - Si un herbívoro se alimenta de estas 3 especies en las seguientes cantidades por día:
 ```{r}
 #| eval: true
@@ -243,20 +240,23 @@ N
 
 ## *Sparse* vs. *Dense* matrices
 - paquete `Matrix`
-- Documentación [Fuente](https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/bcd746dca8cbf0d5a890f01a72d8ef64_MIT18_335JS19_lec24.pdf)
+- Documentación [aqui](https://ocw.mit.edu/courses/18-335j-introduction-to-numerical-methods-spring-2019/bcd746dca8cbf0d5a890f01a72d8ef64_MIT18_335JS19_lec24.pdf)
 
-![](imgs/sparse.png)
+![](imgs/sparse.png){fig-align="center"}
 
 
 ## *Sparse* vs. *Dense* matrices
 - Funciones aplicadas a ambos tipos de matrices producen los mismos resultado
 - Tiene ventajas en el tiempo de procesamiento de datos
 
-
+##
 :::columns
 :::{.column width="50%"}
 - `Dense`
 ```{r}
+#| eval: true
+#| echo: true
+library(Matrix)
 M <- Matrix(10 + 1:28, 4, 7)
 M2 <- cbind(-1, M)
 
@@ -269,6 +269,9 @@ M2[1:2,2] <- M2[3,4:5] <- NA
 ::: {.column width="50%"}
 - `Sparse`
 ```{r}
+#| eval: true
+#| echo: true
+library(Matrix)
 M <- Matrix(10 + 1:28, 4, 7)
 M2 <- cbind(-1, M)
 
@@ -279,6 +282,7 @@ M2[1:2,2] <- M2[3,4:5] <- NA
 sM <- as(M2, "sparseMatrix")
 sM
 ```
+:::
 :::
 
 
@@ -291,6 +295,8 @@ sM
 ## Funciones útiles en el paquete `phyloregion`
 - Para datos de comunidades (sitios x species)
 - [Phyloregion](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.13478g)
+
+##
 ![](imgs/phylo.jpg)
 
 ## Matrices de distancia
@@ -332,6 +338,7 @@ class(vare.dist)
 
 ## Visualizar datos crudos
 ![](imgs/warton.png)
+
 ## Uso de gráficos *genéricos*
 - A partir de una matriz de species x sitios
 - Nos permiten visualizar patrones de la comunidad
@@ -369,12 +376,13 @@ ambi = import(file="dados/ambi.txt",setclass = "data.frame")
 
 ```
 
-# calcular las medias de acuerdo al gradiente de precipitacion
+# calcular las medias 
+- usar el gradiente de precipitacion
 ```{r}
 #| eval: true
 #| echo: true
 
-molu.medias <-colSums(moluscos*ambi$alt)/colSums(moluscos)
+molu.medias <-colSums(moluscos*ambi$lluvia)/colSums(moluscos)
 
 ```
 - Ordenar las filas de acuerdo con el gradiente ambiental y con las medias
@@ -384,13 +392,13 @@ molu.medias <-colSums(moluscos*ambi$alt)/colSums(moluscos)
 #| echo: true
 
 
-molu.ord <-moluscos[,order(molu.medias)]
-
+molu.ord1<-moluscos[order(ambi$lluvia,decreasing=F),]
+molu.ord<-molu.ord1[,order(molu.medias,decreasing=T)]	
 
 ```
 
 ## Visualizar
-
+- Qué vemos en la gráfica abajo? Hay algun patrón?
 ```{r}
 #| eval: true
 #| echo: true
@@ -400,14 +408,66 @@ library(ggpubr)
 ggballoonplot(t(molu.ord))
 
 ```
+## otras opiciones de gráficos genéricos
+- ver el github de Cristian Dambros, de la UFSM-BRA
+- la función [poncho](https://raw.githubusercontent.com/csdambros/R-functions/master/poncho.R)
 
-## 
+## Cuando no hay variables ambientales
+- Igual se puede ordenar las matrices para visualizar los patrones
+- *Indirect* gradient analysis
+- De este tipo se análisis se derivan técnicas más complejas como RA, CA y PCA
+
+## Transformar matrices: formatos *long* y *wide*
+- Habia una excelente documentación [aqui](https://seananderson.ca/2013/10/19/reshape/)
+- Sin emmbargo el paquete `reshape2` ya no se va actualizar
+- Su funciones fueron incorporadas por el paqute *tidyr*
+- Pero hay opciones en el paquete [`data.table`](https://cran.r-project.org/web/packages/data.table/vignettes/datatable-reshape.html)
+
+## Formatos *long* y *wide*
+
+![](imgs/reshape.png)
+
+## en `tidyr`
+- de *long* para *wide* : `tidyr::pivot_wider()`
+- de *wide* para *long* : `tidyr::pivot_longer()`
+- Documentación [aqui](https://tidyr.tidyverse.org/articles/pivot.html)
+
+## Algunos ejemplos:
+- Wide to long
 ```{r}
 #| eval: true
 #| echo: true
-source("https://raw.githubusercontent.com/csdambros/R-functions/master/poncho.R")
 
-poncho(molu.ord,site.names = TRUE)
+library(rio)
+library(tidyr)
+moluscos = import(file="dados/moluscos.txt",setclass = "data.frame")
+moluscos$sites = rownames(moluscos)
 
+mol_long = 
+moluscos %>% 
+  pivot_longer(
+    cols = !sites,
+    names_to = "species",
+    values_to = "abundances")
 ```
 
+## Long to wide:
+- Cómo quedaria?...
+- Usen la función `pivot_wider()`
+```{r}
+#| eval: false
+#| echo: true
+
+mol_long %>% 
+  pivot_wider(
+    names_from = xxx,
+    values_from = xx
+  )
+```
+
+## En Resumen
+![](imgs/whatever.jpg)
+
+## En serio
+- La matriz es una de los formatos esenciales para los analisis ecológicos
+- Manejar y visualizar información de matrices puede revelar informaciones importantes de los datos antes mismo de los análisis
