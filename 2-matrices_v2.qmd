@@ -29,7 +29,6 @@ highlight-style: arrow-light
 
 ![](imgs/amatrix.jpg)
 
-
 ## Matrices de una columna (o *vectores*)
 - *scaling* que usamos en las PCAs
 - Para comparar diferentes vectores
@@ -39,14 +38,16 @@ highlight-style: arrow-light
 ## Son muy usadas en los analisis de ecologia
 - Analisis multivariadas en ecologia de comunidades
 - Para sumarizar grandes conjuntos de datos
-- En las estadísticas empleadas en modelos estadísticos (lm, pglm, glm etc)
+- En las estadísticas empleadas en modelos estadísticos (lm, pglm, gls etc)
+- Muy comunes en macroecología (matrix de presencia-ausencia)
 
 ## Matrices en R
--   `matrix()`vs. `data.frame()`
+-   `matrix()`vs. `data.frame()` vs. `array()`
 -   `matrix()`: solo numeros o solo caracteres
 -   `data.frame()`: mix de tipos numeros y caracteres
+-   `array()` son *n*-dimensionales
 
-## Estructura
+## Estructura de la matriz
 -   una matriz es un tipo especial de `array()`
 -   una matriz tiene 2 dimensiones, formadas por filas y columnas
 
@@ -173,6 +174,72 @@ diag(a)
 
 ```
 
+## Multiplicación de matrices
+
+```{r}
+#| eval: true
+#| echo: true
+
+a <- matrix(1:9, nrow=3)
+b <- diag(rep(1,3))
+d <- matrix(c(0,0,1), nrow=3)
+```
+
+El comando `%*%` se aplica par las multiplicaciones
+
+```{r}
+#| eval: false
+#| echo: true
+
+ a %*% b # Salió bien?
+ a %*% d # esta?
+ d %*% a # y esta?
+```
+
+## División de matrices no existen, se las multiplica por el inverso
+- La función `solve()` calcula el inverso
+- No confundir con `t()`, que es la función para trasponer la matriz
+```{r}
+#| eval: true
+#| echo: true
+
+a <- rbind(c(10,5,5), c(5,10,2), c(5,2,10))
+ainv <- solve(a)
+ainv
+```
+
+```{r}
+#| eval: true
+#| echo: true
+a %*% ainx
+```
+Pueden mirar el resultado usando la función `round()`...queda mejor
+
+
+## QUIZ
+- Un pesticida tiene 2 compuestos tóxicos I y II que se acumulan en 3 especies de plantas A, B y C 
+
+```{r}
+#| eval: true
+#| echo: true
+M = matrix(c(2,3,4,0,1,2), nrow=2,ncol=3,byrow=T,dimnames = list(c("I","II"),
+                                                                   c("A", "B","C")))
+M
+```
+
+- Si un herbívoro se alimenta de estas 3 especies en las seguientes cantidades por día:
+```{r}
+#| eval: true
+#| echo: true
+
+N = matrix(c(5,3,1), nrow=3,ncol=1,byrow=F,dimnames = list(c("A","B","C")))
+                                                                   
+N
+```
+- ?Cuantos contaminantes I y II consume diariamente?
+- Tip: Mirar el producto de M x N
+
+# Tipos de matriz en R
 
 ## *Sparse* vs. *Dense* matrices
 - paquete `Matrix`
@@ -261,4 +328,86 @@ class(vare.dist)
 
 ```
 
+# Visualización de matrices
+
+## Visualizar datos crudos
+![](imgs/warton.png)
+## Uso de gráficos *genéricos*
+- A partir de una matriz de species x sitios
+- Nos permiten visualizar patrones de la comunidad
+- Asociar los patrones a teorias ecológicas
+
+## Gausch 1982
+
+![](imgs/DA4.png)
+
+## Hacer gráficos genéricos
+![](imgs/DA.png)
+
+## Uso de análisis de gradientes (in)directos
+![](imgs/DA2.png)
+
+## Interpretación de los resultados
+![](imgs/DA3.png)
+
+## Cálculo de gradiente directo
+![](imgs/DA5.png)
+
+## Ejemplo usando dados de abundancia de moluscos
+- Importar el archivo `moluscos.txt`
+```{r}
+#| eval: true
+#| echo: true
+library(rio)
+moluscos = import(file="dados/moluscos.txt",setclass = "data.frame")
+
+rownames(moluscos) = moluscos[,1]
+moluscos = moluscos[,-1]
+
+# importar los datos ambientales
+ambi = import(file="dados/ambi.txt",setclass = "data.frame")
+
+```
+
+# calcular las medias de acuerdo al gradiente de precipitacion
+```{r}
+#| eval: true
+#| echo: true
+
+molu.medias <-colSums(moluscos*ambi$alt)/colSums(moluscos)
+
+```
+- Ordenar las filas de acuerdo con el gradiente ambiental y con las medias
+
+```{r}
+#| eval: true
+#| echo: true
+
+
+molu.ord <-moluscos[,order(molu.medias)]
+
+
+```
+
+## Visualizar
+
+```{r}
+#| eval: true
+#| echo: true
+
+library(ggpubr)
+
+ggballoonplot(t(molu.ord))
+
+```
+
+## 
+```{r}
+#| eval: true
+#| echo: true
+source("https://raw.githubusercontent.com/csdambros/R-functions/master/poncho.R")
+
+poncho(molu.ord,site.names = TRUE)
+
+```
 
