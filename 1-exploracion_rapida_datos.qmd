@@ -5,6 +5,7 @@ institute: Instituto de Ecología, A.C.
 format: 
   revealjs:
     slide-number: true
+    embed-resources: true
 editor: visual
 highlight-style: arrow-light
 ---
