@@ -24,12 +24,11 @@ Vamos a utilizar los seguientes paquetes en R
 ::: {.column width="20%"}
 ![](imgs/biscale.png)
 :::
-
 ::: {.column width="80%"}
 -   Paquete para producir mapas bivariados (i.e. dos variables en el mismo layout)
     -   Sirve para producir leyendas bivariadas
-    -   Herramientas para classificación de datos en categorías usando diferentes técninas
-    -   Documentación [aqui](https://chris-prener.github.io/biscale/index.html)
+    -   Herramientas para classificación de datos en categorías usando diferentes       técnicas
+    -   [Documentación](https://chris-prener.github.io/biscale/index.html)
 :::
 :::
 
@@ -39,9 +38,9 @@ Vamos a utilizar los seguientes paquetes en R
 
 >Es un tipo de mapa temático en el que las áreas se sombrean de distintos colores, frecuentemente de la misma gama cromática, que representan distintos valores de una variable estadística característica.
 
-## 
-
+## Dos o más variables...
 -   Mapas bivariados son útiles para graficar dos variables
+-   Ajuste de colores, transparencias y formas
 
 ![](https://www.joshuastevens.net/images/js_finalBivariateMap.png)
 ## Son bastante comunes para reportar resultados de elecciones
@@ -57,7 +56,7 @@ Vamos a utilizar los seguientes paquetes en R
 ## Hay otros ejemplos: colores y area
 ![](imgs/happy.png){fig-align="center"}
 ## Leyendas triangulares
-
+- Tres variables
 [Sabatini et al. 2022](https://onlinelibrary.wiley.com/doi/full/10.1111/ddi.13158)
 ![](imgs/sabatini.jpg){fig-align="center"}
 
@@ -65,18 +64,21 @@ Vamos a utilizar los seguientes paquetes en R
 
 [Sabatini et al. 2022](https://onlinelibrary.wiley.com/doi/full/10.1111/ddi.13158)
 ![](imgs/forest.jpg){fig-align="center"}
-## RGB
+## Mapas RGB
 
 ![](imgs/dengue3.png){fig-align="center"}
 
-## Leyendas rectangulares
+## Leyendas rectangulares con varias categorias
 [Peixoto et al. 2017](https://onlinelibrary.wiley.com/doi/abs/10.1111/geb.12561)
 ![](imgs/peixoto.png){fig-align="center"}
 
 ## Pero lo más importante es que la información esté clara
+- ¿Cuál de los dos mapas transmite mejor la información?
 ![](imgs/dengue2.png){fig-align="center"}
 
-## Producir mapas bivariados
+# Producir mapas bivariados
+
+## Teoría:
 -   La idea central es buscar una manera de como combinar estas dos variables
 -   Escalas diferentes, número diferente de categorias etc...
 -   Mapas bivariados son hechos en dos pasos:
@@ -85,7 +87,7 @@ Vamos a utilizar los seguientes paquetes en R
 
 # 1. Categorizacióon de varibales
 
-##
+## Pasos:
 -   Normalizar los datos en conteos o proporciones
 -   las funciones `cut()` y `summary()` del R base pueden ser útiles
 -   vamos usar la base de datos *iris*
@@ -113,7 +115,6 @@ tabyl(ci)
 ```
 
 ## la función `classIntervals()`
-
 -   Te permite categorizar los datos usando varios tipos de categorización
 -   *quantile*, *jenkins*, *equal* para mencionar algunas
 -   hay que definir el numero de clases (parámetro *n*)
@@ -169,7 +170,6 @@ head(fc)
 -   Se utliza la función `bi_class()` para generar las catetorias
 -   Una de las ventajas de usar la función `bi_class()` es que ella hace la categorización de las dos variables elejidas de una vez, contrário de la función `classIntervals()`
 :::
-
 ::: {.column width="50%"}
 ```{r}
 #| eval: true
@@ -177,7 +177,6 @@ head(fc)
 library(biscale)
 
 data <- bi_class(iris, x = Sepal.Length, y = Petal.Length, style = "quantile", dim = 3)
-
 head(data$bi_class)
 ```
 :::
@@ -203,7 +202,6 @@ head(data$bi_class)
 ::: {.column width="50%"}
 ![](imgs/ayy.png)
 :::
-
 ::: {.column width="50%"}
 ![](https://www.joshuastevens.net/images/js_bivariateGrid7.png){fig-align="center"}
 :::
@@ -273,12 +271,14 @@ map <- ggplot() +
 ```{r}
 #| eval: false
 #| echo: true
+
+library(patchwork)
 map + legend
 ```
 
 ## 
 
-Se puede jugar con el layout final usando la función `inset`
+Se juede jugar con el layout final usando la función `inset`
 
 p1 + inset_element(p2, 0.6, 0.6, 1, 1) \# left, top, right, bottom
 
@@ -293,7 +293,6 @@ p1 + inset_element(p2, 0.6, 0.6, 1, 1) \# left, top, right, bottom
 ![](http://lenkiefer.com/post/2017-04-24-bivariate-map_files/figure-html/04-24-2017-setup-2-1.png)
 
 ## 
-
 -   la leyenda se hace con la función `expand_grid()` del paquete `tidyr`
 
 ```{r}
@@ -325,7 +324,6 @@ ggplot(d, aes(x,y))+
 ```
 
 ## 
-
 -   Lo importante aqui es usar el geom `geom_tile`
 -   Permite usar varios [colores](https://ggplot2.tidyverse.org/reference/geom_tile.html)
 -   vamos jugar con los valores de `alpha` (transparencia) y `fill`
@@ -469,14 +467,12 @@ map + leg
 
 ## 
 
-![](imgs/homework.jpg) {fig-align="center"}
+![](imgs/homework.jpg)
 
 ## Vamos hacer el mapa bivariado de la diversidad filogenetica de angiospermas en la Peninsula de Yucatán
 
 1. Usando el paquete `biscale`
 2. Manualmente
-
-
 
 ##
 ```{r}
