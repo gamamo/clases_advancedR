@@ -24,26 +24,27 @@ Vamos a utilizar los seguientes paquetes en R
 ::: {.column width="20%"}
 ![](imgs/biscale.png)
 :::
+
 ::: {.column width="80%"}
 -   Paquete para producir mapas bivariados (i.e. dos variables en el mismo layout)
     -   Sirve para producir leyendas bivariadas
-    -   Herramientas para classificación de datos en categorías usando diferentes       técnicas
+    -   Herramientas para classificación de datos en categorías usando diferentes técnicas
     -   [Documentación](https://chris-prener.github.io/biscale/index.html)
 :::
 :::
 
 ## Según la wikipedia..
 
-- Mapas bivariados también son conocidos por *Mapa coropleto* o *Mapa de coropletas*
+-   Mapas bivariados también son conocidos por *Mapa coropleto* o *Mapa de coropletas*
 
->Es un tipo de mapa temático en el que las áreas se sombrean de distintos colores, frecuentemente de la misma gama cromática, que representan distintos valores de una variable estadística característica.
+> Es un tipo de mapa temático en el que las áreas se sombrean de distintos colores, frecuentemente de la misma gama cromática, que representan distintos valores de una variable estadística característica.
 
 ## Dos o más variables...
+
 -   Mapas bivariados son útiles para graficar dos variables
 -   Ajuste de colores, transparencias y formas
 
-![](https://www.joshuastevens.net/images/js_finalBivariateMap.png)
-## Son bastante comunes para reportar resultados de elecciones
+![](https://www.joshuastevens.net/images/js_finalBivariateMap.png) \## Son bastante comunes para reportar resultados de elecciones
 
 ![](imgs/para.png){fig-align="center"}
 
@@ -52,33 +53,27 @@ Vamos a utilizar los seguientes paquetes en R
 ![](imgs/dengue.png){fig-align="center"}
 
 ## Hay otros ejemplos: colores y marcaciones
-![](imgs/tabaco.png){fig-align="center"}
-## Hay otros ejemplos: colores y area
-![](imgs/happy.png){fig-align="center"}
-## Leyendas triangulares
-- Tres variables
-[Sabatini et al. 2022](https://onlinelibrary.wiley.com/doi/full/10.1111/ddi.13158)
-![](imgs/sabatini.jpg){fig-align="center"}
+
+![](imgs/tabaco.png){fig-align="center"} \## Hay otros ejemplos: colores y area ![](imgs/happy.png){fig-align="center"} \## Leyendas triangulares - Tres variables [Sabatini et al. 2022](https://onlinelibrary.wiley.com/doi/full/10.1111/ddi.13158) ![](imgs/sabatini.jpg){fig-align="center"}
 
 ## Formatos complejos
 
-[Sabatini et al. 2022](https://onlinelibrary.wiley.com/doi/full/10.1111/ddi.13158)
-![](imgs/forest.jpg){fig-align="center"}
-## Mapas RGB
+[Sabatini et al. 2022](https://onlinelibrary.wiley.com/doi/full/10.1111/ddi.13158) ![](imgs/forest.jpg){fig-align="center"} \## Mapas RGB
 
 ![](imgs/dengue3.png){fig-align="center"}
 
 ## Leyendas rectangulares con varias categorias
-[Peixoto et al. 2017](https://onlinelibrary.wiley.com/doi/abs/10.1111/geb.12561)
-![](imgs/peixoto.png){fig-align="center"}
+
+[Peixoto et al. 2017](https://onlinelibrary.wiley.com/doi/abs/10.1111/geb.12561) ![](imgs/peixoto.png){fig-align="center"}
 
 ## Pero lo más importante es que la información esté clara
-- ¿Cuál de los dos mapas transmite mejor la información?
-![](imgs/dengue2.png){fig-align="center"}
+
+-   ¿Cuál de los dos mapas transmite mejor la información? ![](imgs/dengue2.png){fig-align="center"}
 
 # Producir mapas bivariados
 
 ## Teoría:
+
 -   La idea central es buscar una manera de como combinar estas dos variables
 -   Escalas diferentes, número diferente de categorias etc...
 -   Mapas bivariados son hechos en dos pasos:
@@ -88,6 +83,7 @@ Vamos a utilizar los seguientes paquetes en R
 # 1. Categorizacióon de varibales
 
 ## Pasos:
+
 -   Normalizar los datos en conteos o proporciones
 -   las funciones `cut()` y `summary()` del R base pueden ser útiles
 -   vamos usar la base de datos *iris*
@@ -115,6 +111,7 @@ tabyl(ci)
 ```
 
 ## la función `classIntervals()`
+
 -   Te permite categorizar los datos usando varios tipos de categorización
 -   *quantile*, *jenkins*, *equal* para mencionar algunas
 -   hay que definir el numero de clases (parámetro *n*)
@@ -170,6 +167,7 @@ head(fc)
 -   Se utliza la función `bi_class()` para generar las catetorias
 -   Una de las ventajas de usar la función `bi_class()` es que ella hace la categorización de las dos variables elejidas de una vez, contrário de la función `classIntervals()`
 :::
+
 ::: {.column width="50%"}
 ```{r}
 #| eval: true
@@ -186,30 +184,18 @@ head(data$bi_class)
 
 ## Preparación de una leyenda
 
-::: columns
-::: {.column width="50%"}
-![](https://www.joshuastevens.net/images/js_bivariateGrid.png){fig-align="center"} ![](https://www.joshuastevens.net/images/js_bivariateGrid2.png){fig-align="center"}
-:::
+![](imgs/biva.png)
 
-::: {.column width="50%"}
-![](https://www.joshuastevens.net/images/js_bivariateGrid4.png){fig-align="center"}
-:::
-:::
+##
+![](imgs/mix.gif)
 
 ## 
+![](imgs/biva2.png)
 
-::: columns
-::: {.column width="50%"}
-![](imgs/ayy.png)
-:::
-::: {.column width="50%"}
-![](https://www.joshuastevens.net/images/js_bivariateGrid7.png){fig-align="center"}
-:::
-:::
 
-## la función `bi_legend()`
+## La función `bi_legend()`
 
--   para ver las paletas disponibles [aqui](https://chris-prener.github.io/biscale/articles/bivariate_palettes.html)
+-   Para ver las paletas disponibles [aquí](https://chris-prener.github.io/biscale/articles/bivariate_palettes.html)
 
 ```{r}
 #| eval: true
@@ -224,12 +210,11 @@ bi_legend(pal = "GrPink",
 
 ## El mapa bivariado
 
-1)  vamos a ver el ejemplo del vignette
+1)  Vamos a ver el ejemplo del [vignette](https://chris-prener.github.io/biscale/articles/biscale.html)
 
--   son datos sobre el porcentaje de "brancos" y la ganancia en los EUA.
--   vamos usar las columnas `pctWhite` y `medInc` para hacer el mapa.
--   vamos usar 3 dimensiones y categorizar los datos usando `quantiles`
--   para ver las paletas disponibles [aqui](https://chris-prener.github.io/biscale/articles/bivariate_palettes.html)
+-   Son datos sobre el porcentaje de "brancos" y la ganancia en los EUA.
+-   Vamos usar las columnas `pctWhite` y `medInc` para hacer el mapa.
+-   Vamos usar 3 dimensiones y categorizar los datos usando `quantiles`
 
 ## 
 
@@ -239,10 +224,10 @@ bi_legend(pal = "GrPink",
 
 ::: columns
 ::: {.column width="50%"}
--   el mapa se construye usando el ggplot
--   determinamos el geom como `geom_sf`y como argumento estético `fill=bi_class`
--   el `bi_class` debe ser la categorización que hemos visto anteriormente con usando la justamente a función `bi_class()`
--   una de las capas del ggpplot debe ser `bi_scale_fill`, donde van a poner el argumento `pal` - que es la paleta de colores y `dim` - que es el numero de categorías utilizadas para categorizar los datos.
+-   El mapa se construye usando el ggplot
+-   Determinamos el geom como `geom_sf`y como argumento estético `fill=bi_class`
+-   El `bi_class` debe ser la categorización que hemos visto anteriormente con usando la justamente a función `bi_class()`
+-   Una de las capas del ggplot debe ser `bi_scale_fill`, donde van a poner el argumento `pal` - que es la paleta de colores y `dim` - que es el numero de categorías utilizadas para categorizar los datos.
 :::
 
 ::: {.column width="50%"}
@@ -266,13 +251,24 @@ map <- ggplot() +
 ## 
 
 -   Después de preparar el mapa, hay que prepara la leyenda
+
+```{r}
+#| eval: false
+#| echo: true
+legend <- bi_legend(pal = "GrPink",
+                    dim = 3,
+                    xlab = "Higher % White ",
+                    ylab = "Higher Income ",
+                    size = 8)
+```
+
 -   Por fin, ponerlos lado a lado usando el paquete `patchwork`
 
 ```{r}
 #| eval: false
 #| echo: true
-
 library(patchwork)
+
 map + legend
 ```
 
@@ -284,16 +280,22 @@ p1 + inset_element(p2, 0.6, 0.6, 1, 1) \# left, top, right, bottom
 
 ![](https://patchwork.data-imaginist.com/reference/inset_element-1.png)
 
-## Como hacer mapas bivariados sin usar el paquete `biscale`
+# Como hacer mapas bivariados sin usar el paquete `biscale`
 
--   el tutorial de [Len Kiefer](http://lenkiefer.com/2017/04/24/bivariate-map/)
--   usar el paquete `classInt` para categorizar los datos
--   usar el esquema de colores de la leyenda para preparar el mapa
+##
+-   El tutorial de [Len Kiefer](http://lenkiefer.com/2017/04/24/bivariate-map/)
+-   Usar el paquete `classInt` para categorizar los datos
+-   Usar el esquema de colores de la leyenda para preparar el mapa
 
 ![](http://lenkiefer.com/post/2017-04-24-bivariate-map_files/figure-html/04-24-2017-setup-2-1.png)
 
 ## 
--   la leyenda se hace con la función `expand_grid()` del paquete `tidyr`
+- Qué chulada!
+![](imgs/map.png)
+
+## 
+
+-   La leyenda se hace con la función `expand_grid()` del paquete `tidyr`
 
 ```{r}
 #| eval: true
@@ -324,9 +326,10 @@ ggplot(d, aes(x,y))+
 ```
 
 ## 
+
 -   Lo importante aqui es usar el geom `geom_tile`
 -   Permite usar varios [colores](https://ggplot2.tidyverse.org/reference/geom_tile.html)
--   vamos jugar con los valores de `alpha` (transparencia) y `fill`
+-   Vamos jugar con los valores de `alpha` (transparencia) y `fill`
 
 ## 
 
@@ -334,7 +337,7 @@ ggplot(d, aes(x,y))+
 ::: {.column width="50%"}
 ```{r}
 #| eval: true
-#| echo: false
+#| echo: true
 ggplot(d, aes(x,y))+
   geom_tile(aes(fill=atan(y/x)))+
   scale_fill_viridis_c()+
@@ -351,7 +354,7 @@ ggplot(d, aes(x,y))+
 ::: {.column width="50%"}
 ```{r}
 #| eval: true
-#| echo: false
+#| echo: true
 ggplot(d, aes(x,y))+
   geom_tile(aes(fill=atan(y/x),alpha=x+y))+
   scale_fill_viridis_c()+
@@ -447,7 +450,6 @@ map + leg
 ## Se parecen?
 
 ::: columns
-
 ::: {.column width="50%"}
 ```{r}
 #| eval: true
@@ -462,7 +464,6 @@ map + leg
 :::
 :::
 
-
 # Tarea
 
 ## 
@@ -471,10 +472,11 @@ map + leg
 
 ## Vamos hacer el mapa bivariado de la diversidad filogenetica de angiospermas en la Peninsula de Yucatán
 
-1. Usando el paquete `biscale`
-2. Manualmente
+1.  Usando el paquete `biscale`
+2.  Manualmente
 
-##
+## 
+
 ```{r}
 #| eval: false
 #| echo: true
@@ -490,6 +492,7 @@ library(biscale)
 ```
 
 ## Cargar el mapa base
+
 ```{r}
 #| eval: false
 #| echo: true
@@ -499,6 +502,7 @@ wrld <- ne_countries(scale = "small",returnclass = "sf")
 ```
 
 ## Cargar los datos y ajustar el CRS
+
 ```{r}
 #| eval: false
 #| echo: true
@@ -510,7 +514,8 @@ st_crs(geo)= st_crs(wrld)
 ```
 
 ## 1. Preparar el mapa usando el paquete `biscale`
-- Calcular las categorias
+
+-   Calcular las categorias
 
 ```{r}
 #| eval: false
@@ -520,6 +525,7 @@ cat <- bi_class(geo, x = TBD, y = PBD, style = "quantile", dim = 3)
 ```
 
 ## Preparar la leyenda
+
 ```{r}
 #| eval: false
 #| echo: true
@@ -532,6 +538,7 @@ leg =bi_legend(pal = "DkBlue",
 ```
 
 ## Preparar el mapa
+
 ```{r}
 #| eval: false
 #| echo: true
@@ -548,7 +555,8 @@ map
 
 ## 2. Manualmente
 
-- Crear un *grid*
+-   Crear un *grid*
+
 ```{r}
 #| eval: false
 #| echo: true
@@ -556,6 +564,7 @@ map
 d<-expand.grid(x=1:3,y=1:3)
 d
 ```
+
 ## Crear la leyenda
 
 ```{r}
@@ -610,6 +619,7 @@ geo$catPBD= classInt::findCols(catPBD)
 ```
 
 ## Hacer las columnas para el *alpha* (transparencia) y *color*
+
 ```{r}
 #| eval: false
 #| echo: true
@@ -618,6 +628,7 @@ geo$color  = as.character(atan(geo$catTBD/geo$catPBD))
 ```
 
 ## Hacer el mapa
+
 ```{r}
 #| eval: false
 #| echo: true
@@ -632,6 +643,7 @@ map2
 ```
 
 ## Agregar la leyenda
+
 ```{r}
 #| eval: false
 #| echo: true

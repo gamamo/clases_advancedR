@@ -12,9 +12,10 @@ highlight-style: arrow-light
 # Exploración de datos
 
 ## 
-- Buscar informaciones generales sobre los datos
-- Con *Big Data* es poco probable lograr visualizar toda la información en las matrices
-- Idenficar problemas de forma y contenido
+
+-   Buscar informaciones generales sobre los datos
+-   Con *Big Data* es poco probable lograr visualizar toda la información en las matrices
+-   Idenficar problemas de forma y contenido
 
 ## Paquetes
 
@@ -42,11 +43,11 @@ Vamos a utilizar los seguientes paquetes en R
 
 ## En R
 
-- R identifica de manera automatica las diferencias entre los tipos de información
-- Números, caracteres, espacios, factores...
-- Por eso la importancia de visualizar rapidamente los posible problemas
+-   R identifica de manera automatica las diferencias entre los tipos de información
+-   Números, caracteres, espacios, factores...
+-   Por eso la importancia de visualizar rapidamente los posibles problemas
 
-# Funciones de Visualización de datos
+# Funciones de visualización de datos
 
 ## skimR
 
@@ -58,8 +59,8 @@ Vamos a utilizar los seguientes paquetes en R
 ::: {.column width="60%"}
 -   Es un paquete de basicamente una única función `skim()`
 -   La función `skim()` es útil para sumarizar conjuntos de datos
--   Es un combo de algunas funciones que de R base, como `str()`, `class()`, `summary()`
--   Documentació [aqui](https://cran.r-project.org/web/packages/skimr/vignettes/skimr.html) y [aqui](https://docs.ropensci.org/skimr/articles/extending_skimr.html)
+-   Es un combo de algunas funciones del R base, como `str()`, `class()`, `summary()`
+-   Documentación [aquí](https://cran.r-project.org/web/packages/skimr/vignettes/skimr.html) y [aquí](https://docs.ropensci.org/skimr/articles/extending_skimr.html)
 :::
 :::
 
@@ -76,12 +77,36 @@ df <- data.frame(nacionalidad = c("ARG","NOR","FRA","ARG","ARG","ARG","ARG"),
                                'DiMaria','Maradona'),
                  goles = c(12, 30, 30, 12, 12,30, NA),
                  partidos = c(15, 20, 20, 20, 18,20, NA))
-summary(df)
+```
+. . .
 
+```{r}
+summary(df)
 ```
 
+
 ## Ahora vamos aplicar la función `skim()` sobre un conjunto de datos *df*
-- Me ayuden con la interpretación
+
+-   Me ayuden con la interpretación
+
+```{r,skimr_include_summary = FALSE}
+#| eval: false
+#| echo: true
+
+library(tidyverse)
+library(skimr)
+
+df%>%
+  skim()
+```
+
+## 
+
+![](imgs/skimout.jpg)
+
+## Separando los elementos
+- la función `yank()`
+
 ```{r}
 #| eval: true
 #| echo: true
@@ -90,16 +115,15 @@ library(tidyverse)
 library(skimr)
 
 df%>%
-  skim()
+  skim()%>%
+  yank("numeric")
 
 ```
 
-## 
-
-![](imgs/skimout.jpg)
 
 ## Conjuntos de datos muy grandes
-
+-   Estos son datos de mi posdoc, de interación (binárias: 0s o 1s) aves-plantas
+-   Son más de 140 mil filas...
 ```{r}
 #| eval: true
 #| echo: true
@@ -109,14 +133,16 @@ birds = import(file = "dados/birds.csv" )
 ```
 
 ## QUIZ:
-- Estos son datos de mi posdoc, de interación (binárias: 0s o 1s) aves-plantas
-- Use la función `skim` y conteste:
-- ¿Cuál el número de especies plantas y de aves
-- ¿Hay datos faltantes? 
-- ¿Hay datos raros en las interaciones?
+-   Use la función `skim()` y conteste:
+-   ¿Cuál el número de especies plantas y de aves
+-   ¿Hay datos faltantes?
+-   ¿Hay datos raros en las interaciones?
 
 ## Vamos a identificar los NAs
+- ¿Alguién sugiere alguna manera de hacer eso?
+
 . . .
+
 ```{r}
 #| eval: true
 #| echo: true
@@ -128,8 +154,10 @@ birds%>%
 ```
 
 ## ¿En cuál fila están los valores faltantes?
+- ¿Sugerencias de cómo hacerlo?
 
 . . .
+
 ```{r}
 #| eval: true
 #| echo: true
@@ -137,8 +165,8 @@ birds%>%
 which(birds$birds=="")
 ```
 
-
 ## Funciónes adicionales: `dplyr::glimpse()`
+
 ```{r}
 #| eval: true
 #| echo: true
@@ -149,7 +177,8 @@ df%>%
 
 ```
 
-##
+## 
+
 ```{r}
 #| eval: true
 #| echo: true
@@ -159,7 +188,7 @@ birds%>%
   glimpse()
 ```
 
-## `easystats::report`
+## `easystats::report()`
 
 ```{r}
 #| eval: true
@@ -170,8 +199,9 @@ df%>%
   report()
 ```
 
-##
-- ¿Qué otra información les pareció relevant de la función `report`?
+## 
+-   ¿Qué otra información les pareció relevant de la función `report`?
+
 ```{r}
 #| eval: true
 #| echo: true
@@ -179,6 +209,19 @@ library(easystats)
 
 birds%>%
   report()
+```
+
+##
+- La función report es extramadamente útil cuando aplicada a modelos estadísticos, pero sirve para visualizaciones también
+
+```{r}
+#| eval: true
+#| echo: true
+library(easystats)
+
+model <- lm(Sepal.Length ~ Species, data = iris)
+report(model)
+
 ```
 
 # Extraer información de los datos
@@ -193,7 +236,7 @@ birds%>%
 ::: {.column width="80%"}
 -   Paquete con dos tipos de funciones
     -   Limpieza de datos (vamos ver en la seguiente clase)
-    -   Preparación de tablas de conteos (contingencia) 
+    -   Preparación de tablas de conteos (contingencia)
     -   [Documentación](https://sfirke.github.io/janitor/articles/janitor.html)
 :::
 :::
@@ -211,23 +254,22 @@ df <- data.frame(nacionalidad = c("ARG","NOR","FRA","ARG","ARG","ARG","ARG"),
                                'DiMaria','Maradona'),
                  goles = c(12, 30, 30, 12, 12,30, NA),
                  partidos = c(15, 20, 20, 20, 18,20, NA))
-df
 ```
 
 ## Vamos a probar algunas de sus habilidades en R...
 
-- Usando la función `table()`:
-  - Cuantos tipos de "goles" hay?
-  - Cuantos goles cada jugador ha hecho?
-  
+-   Usando la función `table()`:
+    -   Cuantos tipos de "goles" hay?
+    -   Cuantos goles cada jugador ha hecho?
+
 ## ¿Cuantos tipos de "goles" hay?
+
 ```{r}
 #| eval: true
 #| echo: true
 
 table(df$goles)
 ```
-
 
 ## ¿Cuantos goles cada jugador ha hecho?
 
@@ -239,7 +281,7 @@ table(df$goles)
 table(df$jugadores,df$goles)
 ```
 
-## La función `table()` permite calcular proporciones 
+## La función `table()` permite calcular proporciones
 
 ```{r}
 #| eval: true
@@ -253,6 +295,7 @@ prop.table(table(df$jugadores,df$goles))
 -   El output no es un data.frame
 -   No funciona bien con los pipes (%>%)
 -   Los resultados son complicados de extraer y formatear
+. . .
 
 ```{r}
 #| eval: true
@@ -272,11 +315,11 @@ class(tab)
 
 ::: columns
 ::: {.column width="50%"}
+- Con `tabyl()´
 ```{r}
 #| eval: true
 #| echo: true
 library(janitor)
-library(dplyr)
 
 # Tablas con una variable
 df %>%
@@ -285,11 +328,10 @@ df %>%
 :::
 
 ::: {.column width="50%"}
+- Con `table()`
 ```{r}
 #| eval: true
 #| echo: true
-library(janitor)
-library(dplyr)
 
 # Tablas con una variable - comparar con la función `table()`
   table(df$jugadores)
@@ -297,10 +339,9 @@ library(dplyr)
 :::
 :::
 
-
 ## Tablas con NA
 
-- La función `tabyl()`te indica la presencia de NAs, mientras que `table()` no lo hace por defecto
+-   La función `tabyl()`te indica la presencia de NAs, mientras que `table()` no lo hace por defecto
 
 ```{r}
 #| eval: true
@@ -311,6 +352,7 @@ df %>%
 ```
 
 ## 
+
 ```{r}
 #| eval: true
 #| echo: true
@@ -319,21 +361,23 @@ table(df$goles, useNA = "always")
 ```
 
 ## QUIZ:
-- Use la función `tabyl()` para saber cuál es la especies de ave con más occurrencias
 
-::: {.incremental}
+-   Use la función `tabyl()` para saber cuál es la especies de ave con más occurrencias
+- TIP: para visualizar, miren la función `View()` o la función `arrange()`
+
+. . .
 ```{r}
 #| eval: true
 #| echo: true
+library(janitor)
 
 birds %>%
   tabyl(birds)%>%
-  arrange(desc(n))
+  arrange(desc(n))%>%
+  head()
   
 ```
-:::
 
-# Uso de la función `janitor::adorn_()`
 
 ## Algunas funciones derivadas útiles
 
@@ -342,6 +386,7 @@ birds %>%
 -   `adorn_rounding(digits=1)`
 
 ## `adorn_totals()`
+
 ```{r}
 #| eval: true
 #| echo: true
@@ -375,7 +420,8 @@ df %>%
 -   `adorn_pct_formatting()` - formatar los valores calculados
 -   ambas funciones pueden ser usadas una trás otra
 
-##
+## 
+
 ```{r}
 #| eval: true
 #| echo: true
@@ -384,7 +430,7 @@ df %>%
   filter(nacionalidad == "ARG") %>%
   tabyl(goles,partidos) %>%
   adorn_percentages() %>%
-  adorn_pct_formatting()
+  adorn_pct_formatting() # Colocar los Ns en el output
 
 ```
 
@@ -405,9 +451,9 @@ df %>%
 
 ## función bonus `top_levels()`
 
--   sirve para obtener la tabla de frecuencias de un vector de factores
--   separa los factores en 3 grupos *bajo*, *medio*, *alto*
--   la función `top_levels()` te devuelve un data.frame
+-   Sirve para obtener la tabla de frecuencias de un vector de factores
+-   Separa los factores en 3 grupos *bajo*, *medio*, *alto*
+-   La función `top_levels()` te devuelve un data.frame
 
 ## 
 
@@ -416,24 +462,24 @@ df %>%
 #| echo: true
 
 fac <- as.factor(c("muy fuerte","muy fuerte","muy fuerte","fuerte","débil","débil","muy débil","muy débil"))
-
-top_levels(fac)
-
 ```
+
 . . .
+
 ```{r}
 top_levels(fac,n=1) # n es el numero de níveles en las categorias *bajo* y *alto*
 ```
 
-## Janitor Miscellaneous functions 
-- `clean_names()` para limpiar y ajustar nombres de columnas en data.frames
-- `compare_df_cols()` para comparar si columnas de dos data.frames son iguales
-- `remove_empty()` para remover celdas vacías en data.frames
-- otras funciones [aqui](https://sfirke.github.io/janitor/articles/janitor.html)
+## Janitor Miscellaneous functions
 
-##
+-   `clean_names()` para limpiar y ajustar nombres de columnas en data.frames
+-   `compare_df_cols()` para comparar si columnas de dos data.frames son iguales
+-   `remove_empty()` para remover celdas vacías en data.frames
+-   otras funciones [aqui](https://sfirke.github.io/janitor/articles/janitor.html)
+
+## 
+
 ![](imgs/bernie.jpg)
-
 
 # Tarea
 
@@ -455,15 +501,15 @@ El colega necesita saber cuál de los 3 valores podrá ser usado como variable d
 
 ## Instrucciones
 
-- Importar el conjunto de datos: "ej_visualizacion_datos.xlsx". Usar la función `rio::import()`
-- Es necesario estandarizar los nombres de las columnas? Caso positivo, usar la función `janitor::clean_names()`
+-   Importar el conjunto de datos: "ej_visualizacion_datos.xlsx". Usar la función `rio::import()`
+-   Es necesario estandarizar los nombres de las columnas? Caso positivo, usar la función `janitor::clean_names()`
 
 ## Usando única función vista en clase, contestar a las preguntas:
 
-- Cuál de las columnas tiene mayor promedio?
-- Cuál tiene el mayor valor
-- Cuál tiene una distribución que más se acerca a una "normal"?
-- Cuántos grupos de parcelas hay?
+-   Cuál de las columnas tiene mayor promedio?
+-   Cuál tiene el mayor valor
+-   Cuál tiene una distribución que más se acerca a una "normal"?
+-   Cuántos grupos de parcelas hay?
 
 ## Códigos para contestar a las preguntas
 
@@ -482,4 +528,3 @@ topo %>%
   skimr::skim()
 
 ```
-
